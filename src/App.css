@@ -1,0 +1,35 @@
+
+.container {
+  padding: 20px;
+}
+
+.image__container {
+  padding: 50px;
+  margin: 50px;
+  border: 1px solid red;
+  height: 600;
+  width: 600;
+
+}
+.konvajs_content {
+  margin: 40px;
+  height: 600px;
+  border: 1px solid red;
+  /* padding: 5px; */
+
+}
+.text_center {
+  text-align: center;
+}
+.tabpanel1 {
+  padding: 10px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
