@@ -1,9 +1,10 @@
-import logo from "./logo.svg";
+import logo from './logo.svg';
 
-import "./App.css";
-import FirstEditor from "./components/FirstEditor";
-import SecondEditor from "./components/SecondEditor";
-import ThirdEditor from "./components/ThirdEditor";
+import './App.css';
+import FirstEditor from './components/FirstEditor';
+import SecondEditor from './components/SecondEditor';
+import ThirdEditor from './components/ThirdEditor';
+import FirstPage from './components/FirstPage';
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
       </header>
       <main className="height_full">
         {/* <SecondEditor /> */}
-        <ThirdEditor />
+        <FirstPage />
+        {/* <ThirdEditor /> */}
       </main>
     </div>
   );
