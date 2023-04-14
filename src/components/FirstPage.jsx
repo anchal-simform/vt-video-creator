@@ -1,4 +1,4 @@
-import React from 'react';
+import "./FirstPage.scss";
 
 function FirstPage() {
   return <div>FirstPage</div>;

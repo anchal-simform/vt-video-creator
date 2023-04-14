@@ -1,0 +1,23 @@
+@use "./variables.scss" as *;
+
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.icon-wrap {
+  display: inline-block;
+  line-height: 1;
+}
