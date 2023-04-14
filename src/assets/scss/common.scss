@@ -21,3 +21,58 @@ body {
   display: inline-block;
   line-height: 1;
 }
+
+img {
+  max-width: 100%;
+}
+
+.ant-btn {
+  padding: 10px 30px;
+  height: 37px;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: $clr-secondary-btn-bg;
+  border-color: $clr-secondary-btn-bg;
+  font-weight: 500;
+  box-shadow: none;
+  border-radius: 8px;
+  color: $clr-text-dark;
+  &:not(:disabled):hover {
+    border-color: $clr-secondary-btn-bg;
+    color: $clr-text-dark;
+  }
+  &-primary {
+    background-color: $clr-primary;
+    color: $clr-white;
+    font-weight: 600;
+
+    &:not(:disabled):hover {
+      background-color: $clr-primary;
+      color: $clr-white;
+      border-color: $clr-white;
+    }
+  }
+}
+
+.ant-slider {
+  & &-handle {
+    &::after {
+      background-color: $clr-primary;
+      box-shadow: none;
+      height: 18px;
+      width: 18px;
+      left: -3px;
+    }
+  }
+  & &-rail {
+    background-color: $clr-secondary-btn-bg;
+    width: 6px;
+  }
+  & &-track {
+    background-color: $clr-primary;
+    width: 6px;
+  }
+}

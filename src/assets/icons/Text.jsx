@@ -1,4 +1,4 @@
-export function ArrowLeft(props) {
+export function Text(props) {
   const { color = "#292D32", size = "30" } = props;
   return (
     <span className="icon-wrap">

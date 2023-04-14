@@ -1,4 +1,4 @@
-export function Undo(props) {
+export function ZoomOut(props) {
   const { color = "#292D32", size = "24" } = props;
   return (
     <span className="icon-wrap">
@@ -7,10 +7,8 @@ export function Undo(props) {
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeMiterlimit="10"
           strokeWidth="1.5"
-          d="M7.13 18.31h8c2.76 0 5-2.24 5-5s-2.24-5-5-5h-11"></path>
-        <path stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6.43 10.81L3.87 8.25l2.56-2.56"></path>
+          d="M9 11.7h5M11.5 21a9.5 9.5 0 100-19 9.5 9.5 0 000 19zM22 22l-2-2"></path>
       </svg>
     </span>
   );

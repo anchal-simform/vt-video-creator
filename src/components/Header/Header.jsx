@@ -1,5 +1,10 @@
+import { Button } from "antd";
 import logo from "../../assets/img/logo.png";
 import { ArrowLeft } from "../../assets/icons/ArrowLeft";
+import { Clock } from "../../assets/icons/Clock";
+import { Redo } from "../../assets/icons/Redo";
+import { Undo } from "../../assets/icons/Undo";
+import { Play } from "../../assets/icons/Play";
 import "./Header.scss";
 
 function Header() {
@@ -15,7 +20,15 @@ function Header() {
         </div>
         <div className="header__action__buttons">
           <div className="buttons__history">
+            <Undo />
+            <Redo />
           </div>
+          <div className="buttons__divider" />
+          <div className="buttons__time">
+            <Clock /> 30 Sec
+          </div>
+          <Button icon={<Play />}>Preview</Button>
+          <Button type="primary">Save</Button>
         </div>
       </div>
     </header>
