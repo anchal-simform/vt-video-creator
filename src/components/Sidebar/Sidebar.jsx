@@ -6,7 +6,7 @@ import { Bucket } from "../../assets/icons/Bucket";
 import "./Sidebar.scss";
 
 function Sidebar() {
-  const [activeItem, setActiveItem] = useState("media");
+  const [activeItem, setActiveItem] = useState("text");
   return (
     <div className="sidebar">
       <ul className="sidebar__list">

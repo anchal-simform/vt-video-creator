@@ -4,6 +4,7 @@
   padding: 28px 14px 28px 13px;
   width: 127px;
   border-right: 1px solid $clr-neutral-bg;
+  flex-shrink: 0;
   &__list {
     display: grid;
     list-style: none;
