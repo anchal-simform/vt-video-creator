@@ -18,8 +18,8 @@ function App() {
       </header>
       <main className="height_full">
         {/* <SecondEditor /> */}
-        <FirstPage />
-        {/* <ThirdEditor /> */}
+        {/* <FirstPage /> */}
+        <ThirdEditor />
       </main>
     </div>
   );

@@ -1,51 +1,59 @@
-import { Button, Col, Row } from "antd";
-import Konva from "konva";
-import React, { useEffect, useRef, useState, useTransition } from "react";
-import { Image, Layer, Rect, Stage, Text } from "react-konva";
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
+import { Button, Col, Row } from 'antd';
+import Konva from 'konva';
+import React, { useEffect, useRef, useState, useTransition } from 'react';
+import { Image, Layer, Rect, Stage, Text } from 'react-konva';
+import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 const ANIMATION_EASINGS = [
-  { name: "Linear", color: "blue" },
-  { name: "EaseIn", color: "green" },
-  { name: "EaseOut", color: "green" },
-  { name: "EaseInOut", color: "green" },
-  { name: "BackEaseIn", color: "blue" },
-  { name: "BackEaseOut", color: "blue" },
-  { name: "BackEaseInOut", color: "blue" },
-  { name: "ElasticEaseIn", color: "green" },
-  { name: "ElasticEaseOut", color: "green" },
-  { name: "ElasticEaseInOut", color: "green" },
-  { name: "BounceEaseIn", color: "blue" },
-  { name: "BounceEaseOut", color: "blue" },
-  { name: "BounceEaseInOut", color: "blue" },
-  { name: "StrongEaseIn", color: "green" },
-  { name: "StrongEaseOut", color: "green" },
-  { name: "StrongEaseInOut", color: "green" },
+  { name: 'Linear', color: 'blue' },
+  { name: 'EaseIn', color: 'green' },
+  { name: 'EaseOut', color: 'green' },
+  { name: 'EaseInOut', color: 'green' },
+  { name: 'BackEaseIn', color: 'blue' },
+  { name: 'BackEaseOut', color: 'blue' },
+  { name: 'BackEaseInOut', color: 'blue' },
+  { name: 'ElasticEaseIn', color: 'green' },
+  { name: 'ElasticEaseOut', color: 'green' },
+  { name: 'ElasticEaseInOut', color: 'green' },
+  { name: 'BounceEaseIn', color: 'blue' },
+  { name: 'BounceEaseOut', color: 'blue' },
+  { name: 'BounceEaseInOut', color: 'blue' },
+  { name: 'StrongEaseIn', color: 'green' },
+  { name: 'StrongEaseOut', color: 'green' },
+  { name: 'StrongEaseInOut', color: 'green' }
 ];
-
+let defaultSlideObject = {
+  images: [],
+  previewImages: [],
+  texts: [],
+  audioFile: '',
+  previewAudio: '',
+  backgroundColor: '',
+  duration: 0
+};
 const ThirdEditor = () => {
-  const [image, setImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+  const [slides, setSlides] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [images, setImages] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
   const [texts, setTexts] = useState([]);
   const stageRef = useRef(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const [play, setPlay] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
   const myRefs = useRef([]);
   const videoRef = useRef(null);
   const textRef = useRef(null);
   const audioDemoRef = useRef(null);
-  const mediaRecorderRef = useRef(null);
-  const [recording, setRecording] = useState(false);
   const [audioSelected, setAudioSelected] = useState(null);
   const [previewAudio, setPreviewAudio] = useState(null);
-  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [backgroundColor, setBackgroundColor] = useState('#ffffff');
   const [duration, setDuration] = useState(1);
   const divRef = useRef(null);
   const [dimensions, setDimensions] = useState({
     width: 0,
-    height: 0,
+    height: 0
   });
 
   const handleBackgroundColorChange = (e) => {
@@ -60,7 +68,7 @@ const ThirdEditor = () => {
     if (divRef.current?.offsetHeight && divRef.current?.offsetWidth) {
       setDimensions({
         width: divRef.current.offsetWidth,
-        height: divRef.current.offsetHeight,
+        height: divRef.current.offsetHeight
       });
     }
   }, []);
@@ -75,7 +83,7 @@ const ThirdEditor = () => {
     removeTextBeforeAnimation();
     setTimeout(() => {
       setPlay(true);
-    }, 50);
+    }, 100);
   };
 
   const removeTextBeforeAnimation = () => {
@@ -91,7 +99,6 @@ const ThirdEditor = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const { colour, text, size, fontFamily, inAnimation } = event.target;
-    console.log({ anim: inAnimation.value });
     // if (!fontSize.value)
     const textNode = {
       id: Date.now(),
@@ -100,11 +107,11 @@ const ThirdEditor = () => {
       size: parseInt(size.value) ?? 50,
       colour: colour.value,
       inAnimation: inAnimation.value,
-      outAnimation: "EaseOut",
+      outAnimation: 'EaseOut',
       duration: 2,
       //   fontFamily: fontFamily.value,
       x: 0,
-      y: 0,
+      y: 0
     };
     const newTexts = [...texts, textNode];
     startTransition(() => {
@@ -113,7 +120,7 @@ const ThirdEditor = () => {
   };
 
   const playAnimations = () => {
-    console.log("Inside the play animations");
+    console.log('Inside the play animations');
 
     const t = texts.map((text, i) => {
       // Render Animation in two steps first remove the animation by adding font 0
@@ -122,7 +129,7 @@ const ThirdEditor = () => {
         node: myRefs.current[i],
         duration: text.duration,
         easing: Konva.Easings[text.inAnimation],
-        fontSize: parseInt(text.size),
+        fontSize: parseInt(text.size)
         // onFinish: () => {
         //   const updatedTexts = [...texts];
         //   const index = updatedTexts.findIndex(
@@ -146,76 +153,95 @@ const ThirdEditor = () => {
   };
 
   const recordVideo = async () => {
-    handlePlayAnimation();
-    setIsRendering(true);
+    try {
+      handlePlayAnimation();
+      setIsRendering(true);
+      const totalDurationInMs = (parseInt(duration) + 1.5) * 1000;
+      if (!audioSelected) {
+        setIsRendering(false);
+        setPlay(false);
+        alert('No Audio Selecte, Audio is mandatory');
+        return;
+      }
+      const audio = new Audio(URL.createObjectURL(audioSelected));
+      await audio.play();
+      const audioStream = audio.captureStream();
 
-    const audio = new Audio(URL.createObjectURL(audioSelected));
-    await audio.play();
-    const audioStream = audio.captureStream();
+      const canvas = document.querySelector('canvas');
+      const ctx = canvas.getContext('2d');
 
-    const canvas = document.querySelector("canvas");
-    const ctx = canvas.getContext("2d");
+      const video = document.querySelector('video');
 
-    const video = document.querySelector("video");
+      const videoStream = canvas.captureStream(30);
 
-    const videoStream = canvas.captureStream(30);
+      audioStream.getAudioTracks().forEach((track) => {
+        videoStream.addTrack(track);
+      });
 
-    audioStream.getAudioTracks().forEach((track) => {
-      videoStream.addTrack(track);
-    });
+      const mediaRecorder = new MediaRecorder(videoStream);
+      let chunks = [];
 
-    const mediaRecorder = new MediaRecorder(videoStream);
-    let chunks = [];
-    mediaRecorder.ondataavailable = function (e) {
-      chunks.push(e.data);
-    };
+      mediaRecorder.ondataavailable = function (e) {
+        chunks.push(e.data);
+      };
 
-    mediaRecorder.onstop = function (e) {
-      const blob = new Blob(chunks, { type: "video/mp4" });
-      console.log({ blob });
-      chunks = [];
-      const videoURL = URL.createObjectURL(blob);
-      video.src = videoURL;
-      let a = document.createElement("a");
-      document.body.appendChild(a);
-      a.style = "display: none";
-      a.href = videoURL;
-      a.download = "video.mp4";
-      // a.click();
-    };
+      mediaRecorder.onstop = function (e) {
+        const blob = new Blob(chunks, { type: 'video/mp4' });
+        console.log({ blob });
+        chunks = [];
+        const videoURL = URL.createObjectURL(blob);
+        video.src = videoURL;
+        let a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style = 'display: none';
+        a.href = videoURL;
+        a.download = 'video.mp4';
+        a.click();
+      };
 
-    setPlay(false);
-    mediaRecorder.start();
-    const tween = new Konva.Tween({
-      node: textRef.current,
-      duration: duration + 1,
-      easing: Konva.Easings["EaseIn"],
-      fontSize: parseInt(1),
-      onFinish: () => {
+      setPlay(false);
+      const tween = new Konva.Tween({
+        node: textRef.current,
+        duration: parseInt(duration) + 1.5,
+        easing: Konva.Easings['EaseIn'],
+        fontSize: 2,
+        onFinish: async () => {
+          console.log('Inside the on Finish function');
+          // mediaRecorder.stop();
+          // await audio.pause();
+          setPlay(false);
+          setIsRendering(false);
+        }
+      });
+
+      await tween.play();
+
+      mediaRecorder.start();
+      setTimeout(async function () {
+        console.log('Inside the set timeout final function');
         mediaRecorder.stop();
-      },
-    });
-
-    tween.play();
-
-    setTimeout(async function () {
-      // mediaRecorder.stop();
-      await audio.pause();
+        await audio.pause();
+        setIsRendering(false);
+        setPlay(false);
+      }, totalDurationInMs);
+    } catch (error) {
+      alert('Failed to record video');
       setIsRendering(false);
-    }, duration * 1000);
+      setPlay(false);
+    }
   };
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    if (!file.type.startsWith("image/")) {
-      console.log("Please select an image file.");
+    if (!file.type.startsWith('image/')) {
+      console.log('Please select an image file.');
       return;
     }
     const url = window.URL.createObjectURL(file);
-    setPreviewImage(file);
+    setPreviewImages([...previewImages, file]);
     const img = new window.Image();
     img.onload = () => {
-      setImage(img);
+      setImages([...images, img]);
       window.URL.revokeObjectURL(url);
     };
     img.src = url;
@@ -223,20 +249,33 @@ const ThirdEditor = () => {
 
   const handleAudioFileSelect = (event) => {
     const file = event.target.files[0];
-    console.log("File Type is ", file.type);
+    console.log('File Type is ', file.type);
 
-    if (!file.type.startsWith("audio/")) {
-      console.log("Please select an audio file.");
+    if (!file.type.startsWith('audio/')) {
+      console.log('Please select an audio file.');
       return;
     }
 
     setPreviewAudio(file);
     const url = window.URL.createObjectURL(file);
-    // const audioDemo = document.querySelector("audio");
-    // audioDemo.src = url;
     if (file) {
       setAudioSelected(file);
     }
+  };
+
+  const deleteImageItem = (index) => {
+    const newImageList = [...images]; // make a copy of the array
+    newImageList.splice(index, 1); // remove the element at the given index
+    const newPreviewImageList = [...previewImages]; // make a copy of the array
+    newPreviewImageList.splice(index, 1); // remove the element at the given index
+    setImages(newImageList); // update the state with the new array
+    setPreviewImages(newPreviewImageList);
+  };
+
+  const deleteTextItem = (index) => {
+    const newTextList = [...texts];
+    newTextList.splice(index, 1);
+    setTexts(newTextList);
   };
 
   const handleTextDragEnd = (event) => {
@@ -247,7 +286,7 @@ const ThirdEditor = () => {
           return {
             ...text,
             x: textNode.attrs.x,
-            y: textNode.attrs.y,
+            y: textNode.attrs.y
           };
         }
         return text;
@@ -261,14 +300,14 @@ const ThirdEditor = () => {
         <Col span={6}>
           <h2 className="text_center">Add Features</h2>
           <div className="add_ons">
-            <Tabs className={"tabs1"}>
-              <TabList className={"tablist1"}>
+            <Tabs className={'tabs1'}>
+              <TabList className={'tablist1'}>
                 <Tab>Settings </Tab>
                 <Tab> Text</Tab>
                 <Tab> Image</Tab>
                 <Tab> Audio</Tab>
               </TabList>
-              <TabPanel className={"tabpanel1"}>
+              <TabPanel className={'tabpanel1'}>
                 <div>
                   <div className="form_item">
                     <label htmlFor="fontColour">Background Colour</label>
@@ -290,39 +329,41 @@ const ThirdEditor = () => {
                   {duration}
                 </div>
               </TabPanel>
-              <TabPanel className={"tabpanel1"}>
-                <form onSubmit={handleSubmit}>
-                  <div className="form_item">
-                    <label htmlFor="fontSize">Text Content</label>
-                    <input
-                      required
-                      type="text"
-                      name="text"
-                      placeholder="Enter text"
-                    />
-                  </div>
+              <TabPanel className={'tabpanel1'}>
+                <div className="text_container">
                   <div className="text_add_form">
-                    <div className="form_item">
-                      <label htmlFor="fontSize">Font Size</label>
-                      <input
-                        type="number"
-                        name="size"
-                        id="size"
-                        required
-                        placeholder="Enter Font Size value in px"
-                      />
-                    </div>
-                    <div className="form_item">
-                      <label htmlFor="fontColour">Font Colour</label>
-                      <input
-                        type="color"
-                        name="colour"
-                        id="colour"
-                        required
-                        placeholder="Select Color"
-                      />
-                    </div>
-                    <div className="form_item">
+                    <form onSubmit={handleSubmit}>
+                      <div className="form_item">
+                        <label htmlFor="fontSize">Text Content</label>
+                        <input
+                          required
+                          type="text"
+                          name="text"
+                          placeholder="Enter text"
+                        />
+                      </div>
+                      <div className="text_add_form">
+                        <div className="form_item">
+                          <label htmlFor="fontSize">Font Size</label>
+                          <input
+                            type="number"
+                            name="size"
+                            id="size"
+                            required
+                            placeholder="Enter Font Size value in px"
+                          />
+                        </div>
+                        <div className="form_item">
+                          <label htmlFor="fontColour">Font Colour</label>
+                          <input
+                            type="color"
+                            name="colour"
+                            id="colour"
+                            required
+                            placeholder="Select Color"
+                          />
+                        </div>
+                        {/* <div className="form_item">
                       <label htmlFor="fontColour">Font Family</label>
                       <select
                         name="fontFamily"
@@ -330,26 +371,38 @@ const ThirdEditor = () => {
                         // required
                         placeholder="Select Color"
                       ></select>
-                    </div>
-                    <div className="form_item">
-                      <label>Select animation type</label>
-                      <select name="inAnimation" placeholder="Selec">
-                        {ANIMATION_EASINGS.map((easing, i) => {
-                          return (
-                            <option key={i} value={easing.name}>
-                              {easing.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                    <div className="form_item">
-                      <button type="submit">Add text</button>
-                    </div>
+                    </div> */}
+                        <div className="form_item">
+                          <label>Select animation type</label>
+                          <select name="inAnimation" placeholder="Selec">
+                            {ANIMATION_EASINGS.map((easing, i) => {
+                              return (
+                                <option key={i} value={easing.name}>
+                                  {easing.name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                        <div className="form_item">
+                          <button type="submit">Add text</button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
-                </form>
+                  <div className="text_list">
+                    {texts?.map((text, i) => (
+                      <div className="text_item" key={i}>
+                        <p>{text?.text}</p>
+                        <button onClick={() => deleteTextItem(i)}>
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </TabPanel>
-              <TabPanel className={"tabpanel1"}>
+              <TabPanel className={'tabpanel1'}>
                 <div className="tab_panel">
                   <div className="image_select_form">
                     <input
@@ -358,30 +411,21 @@ const ThirdEditor = () => {
                       onChange={handleFileSelect}
                     />
                   </div>
-                  {previewImage ? (
-                    <div>
+                  {previewImages?.map((img, i) => (
+                    <div key={i}>
                       <p>Image Selected</p>
                       <img
                         height={20}
                         width={20}
                         alt="preview"
-                        src={URL.createObjectURL(previewImage)}
+                        src={URL.createObjectURL(img)}
                       />
-                      <Button
-                        onClick={() => {
-                          setImage(null);
-                          setPreviewImage(null);
-                        }}
-                      >
-                        Remove
-                      </Button>
+                      <Button onClick={() => deleteImageItem(i)}>Remove</Button>
                     </div>
-                  ) : (
-                    ""
-                  )}
+                  ))}
                 </div>
               </TabPanel>
-              <TabPanel className={"tabpanel1"}>
+              <TabPanel className={'tabpanel1'}>
                 <div className="audio_select_form">
                   <div className="file__input">
                     <input
@@ -408,7 +452,7 @@ const ThirdEditor = () => {
                       </Button>
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                 </div>
               </TabPanel>
@@ -424,11 +468,11 @@ const ThirdEditor = () => {
                 handlePlayAnimation();
                 setTimeout(() => {
                   setPlay(false);
-                }, duration * 1000 + 200);
+                }, duration * 1000);
               }}
             >
               Play animation
-            </Button>{" "}
+            </Button>{' '}
             <Button onClick={recordVideo} disabled={isRendering}>
               Generate Video 1
             </Button>
@@ -450,35 +494,10 @@ const ThirdEditor = () => {
                   width={dimensions.width - 3}
                   height={dimensions.height - 3}
                 ></Rect>
-                {image && <Image image={image} draggable={true} />}
-                {texts.map((text, i) => (
-                  <Text
-                    key={i}
-                    ref={(el) => (myRefs.current[i] = el)}
-                    // onDragEnd={handleTextDragEnd}
-                    text={text.text}
-                    fontSize={text.fontSize}
-                    fill={text.colour}
-                    draggable={true}
-                    x={text.x}
-                    y={text.y}
-                  />
+
+                {images?.map((img, i) => (
+                  <Image key={i} image={img} draggable={true} />
                 ))}
-
-                <Text
-                  key={"123"}
-                  text="."
-                  ref={textRef}
-                  fontSize={1}
-                  // fil={"red"}
-                  draggable={true}
-                  x={0}
-                  y={0}
-                ></Text>
-              </Layer>
-              {/* <Layer>{image && <Image image={image} draggable={true} />}</Layer> */}
-
-              {/* <Layer>
                 {texts.map((text, i) => (
                   <Text
                     key={i}
@@ -492,7 +511,17 @@ const ThirdEditor = () => {
                     y={text.y}
                   />
                 ))}
-              </Layer> */}
+
+                <Text
+                  key={'123'}
+                  text="."
+                  ref={textRef}
+                  fontSize={1}
+                  draggable={true}
+                  x={0}
+                  y={0}
+                ></Text>
+              </Layer>
             </Stage>
           </div>
         </Col>
