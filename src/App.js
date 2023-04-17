@@ -1,6 +1,6 @@
-import Header from "./components/Header/Header";
-import FirstPage from "./components/FirstPage";
-import "./App.scss";
+import Header from './components/Header/Header';
+import FirstPage from './components/FirstPage';
+import './App.scss';
 
 function App() {
   return (
