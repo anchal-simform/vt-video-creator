@@ -1,20 +1,17 @@
-import { useState } from "react";
-import { Select } from "antd";
-import { Underline } from "./../../assets/icons/Underline";
-import { AlignCenter } from "./../../assets/icons/AlignCenter";
-import { Outline } from "./../../assets/icons/Outline";
-import "./Toolbox.scss";
-import { HorizontalOutline } from "../../assets/icons/HorizontalOutline";
+import { Select } from 'antd';
+import { HorizontalOutline } from '../../assets/icons/HorizontalOutline';
+import { AlignCenter } from './../../assets/icons/AlignCenter';
+import { Outline } from './../../assets/icons/Outline';
+import { Underline } from './../../assets/icons/Underline';
+import './Toolbox.scss';
 
 const handleChange = (value) => {
   console.log(`selected ${value}`);
 };
-
-function Toolbox() {
-  const [toolbox, setToolbox] = useState("text");
+function Toolbox({ activeItem: toolbox }) {
   return (
     <div className="toolbox">
-      {toolbox === "text" && (
+      {toolbox === 'text' && (
         <>
           <div className="toolbox_title">Text Properties</div>
           <div>
@@ -29,10 +26,10 @@ function Toolbox() {
                   defaultValue="lucy"
                   onChange={handleChange}
                   options={[
-                    { value: "jack", label: "Jack" },
-                    { value: "lucy", label: "Lucy" },
-                    { value: "Yiminghe", label: "yiminghe" },
-                    { value: "disabled", label: "Disabled" },
+                    { value: 'jack', label: 'Jack' },
+                    { value: 'lucy', label: 'Lucy' },
+                    { value: 'Yiminghe', label: 'yiminghe' },
+                    { value: 'disabled', label: 'Disabled' }
                   ]}
                 />
                 <Select
@@ -40,10 +37,10 @@ function Toolbox() {
                   defaultValue="30"
                   onChange={handleChange}
                   options={[
-                    { value: "10", label: "10" },
-                    { value: "20", label: "20" },
-                    { value: "30", label: "30" },
-                    { value: "40", label: "40" },
+                    { value: '10', label: '10' },
+                    { value: '20', label: '20' },
+                    { value: '30', label: '30' },
+                    { value: '40', label: '40' }
                   ]}
                 />
               </div>
@@ -89,18 +86,18 @@ function Toolbox() {
           </div>
         </>
       )}
-      {toolbox === "media" && (
+      {toolbox === 'media' && (
         <>
           <div className="toolbox_title">Add Media</div>
           <input type="file" name="" id="" />
         </>
       )}
-      {toolbox === "graphics" && (
+      {toolbox === 'graphics' && (
         <>
           <div className="toolbox_title">Add Shapes</div>
         </>
       )}
-      {toolbox === "colors" && (
+      {toolbox === 'colors' && (
         <>
           <div className="toolbox_title">Pick a Color</div>
           <input type="color" name="" id="" />

@@ -1,12 +1,12 @@
 import Header from './components/Header/Header';
-import FirstPage from './components/FirstPage';
+import Editor from './Pages/Editor';
 import './App.scss';
 
 function App() {
   return (
     <div className="App wrapper">
       <Header />
-      <FirstPage />
+      <Editor />
     </div>
   );
 }
