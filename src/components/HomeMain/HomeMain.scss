@@ -1,0 +1,43 @@
+@use "../../assets/scss/variables.scss" as *;
+
+.homemain {
+  padding: 50px 30px 30px 30px;
+  background-color: $textbox-bg;
+  flex-grow: 1;
+  height: calc(100vh - 79px);
+  overflow: auto;
+  &__title {
+    color: $clr-text-dark;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 32px;
+    margin-bottom: 30px;
+    span {
+      font-weight: 700;
+    }
+    .icon-wrap {
+      cursor: pointer;
+    }
+  }
+  &__subtitle {
+    font-weight: 600;
+    font-size: 20px;
+    color: $clr-text-dark;
+    margin-bottom: 15px;
+  }
+  &__action {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  &__recent,
+  &__latest {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
+  &__recent {
+    margin-bottom: 30px;
+  }
+}

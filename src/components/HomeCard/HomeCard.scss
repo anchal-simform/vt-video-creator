@@ -1,0 +1,37 @@
+@use "../../assets/scss/variables.scss" as *;
+
+.homecard {
+  padding: 15px;
+  background: $clr-white;
+  border: 1px solid $clr-neutral-bg;
+  border-radius: 20px;
+  &__img {
+    margin-bottom: 15px;
+    img {
+      border-radius: 10px;
+    }
+  }
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    p {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+  &__edited,
+  &__author {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    line-height: 24px;
+    color: $clr-text-light;
+    gap: 10px;
+  }
+  &__edited {
+    margin-bottom: 5px;
+  }
+}
