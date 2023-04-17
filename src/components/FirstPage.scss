@@ -1,0 +1,27 @@
+@use '../assets/scss/variables.scss' as *;
+
+.editor {
+  height: calc(100vh - 79px);
+  display: flex;
+  flex-direction: column;
+  &__top {
+    flex-grow: 1;
+    display: flex;
+    .viewport-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 305px;
+      background-color: $textbox-bg;
+      padding: 32px 30px 30px 30px;
+      gap: 30px;
+      align-items: center;
+      flex-grow: 1;
+      .toolbox {
+        align-self: flex-start;
+      }
+    }
+  }
+  &__bottom {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+}

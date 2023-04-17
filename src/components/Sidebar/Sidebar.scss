@@ -1,0 +1,33 @@
+@use "../../assets/scss/variables.scss" as *;
+
+.sidebar {
+  padding: 28px 14px 28px 13px;
+  width: 127px;
+  border-right: 1px solid $clr-neutral-bg;
+  flex-shrink: 0;
+  &__list {
+    display: grid;
+    list-style: none;
+    gap: 20px;
+    &__item {
+      display: grid;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+      text-align: center;
+      gap: 8px;
+      color: $clr-text-dark;
+      height: 80px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 350ms ease-in-out;
+      span {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      &.active {
+        background-color: $clr-secondary-btn-bg;
+      }
+    }
+  }
+}

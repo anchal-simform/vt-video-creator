@@ -1,0 +1,69 @@
+@use "../../assets/scss/variables.scss" as *;
+
+.timeline {
+  border-top: 1px solid $clr-neutral-bg;
+  display: grid;
+  grid-template-columns: 127px 1fr 71px;
+  padding-top: 38px;
+  &__left, &__mid {
+    display: grid;
+    grid-template-rows: 131px 40px 38px;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  &__mid {
+    flex-grow: 1;
+    position: relative;
+    justify-content: start;
+    text-align: left;
+    padding-bottom: 52px;
+    &__grid {
+      position: absolute;
+      width: calc(100% + 32px);
+      height: calc(100% + 10px);
+      display: grid;
+      justify-content: space-between;
+      grid-auto-flow: column;
+      top: -30px;
+      left: -16px;
+      color: $clr-text-light;
+      font-size: 11px;
+      font-weight: 600;
+      z-index: -1;
+      & > div {
+        position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 100%;
+          border-left: 1px dashed $clr-neutral-bg;
+          left: 50%;
+          top: 16px;
+        }
+      }
+    }
+    &__images {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow: auto;
+      gap: 3px;
+    }
+    &__audio {
+      overflow: auto;
+      img {
+        height: 40px;
+      }
+    }
+  }
+  &__right {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: 24px 1fr 24px;
+    gap: 8px;
+    text-align: center;
+    padding-bottom: 30px;
+  }
+}
