@@ -26,7 +26,7 @@ function ColorPaletteToolbox() {
   };
   return (
     <>
-      <div className="toolbox_title">Pick a Color</div>
+      <div className="toolbox_title">Pick a background Color</div>
       <input type="color" onChange={handleColorChange} name="" id="" />
     </>
   );

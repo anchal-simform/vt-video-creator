@@ -101,4 +101,24 @@
       }
     }
   }
+
+  .image_toolbox_container {
+    margin: 10px;
+    padding: 10px;
+  }
+  .audio_toolbox_container {
+    margin: 10px;
+    padding: 10px;
+  }
+  .image_list {
+    margin: 10px 0 10px 0 ;
+    border: 1px solid black;
+    padding: 5;
+
+    .image_item {
+      padding: 5;
+      margin-top: 10px ;
+      width: 100%;
+    }
+  }
 }

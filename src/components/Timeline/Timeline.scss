@@ -69,7 +69,6 @@
 
   .timeline_text {
     color: #0693E3;
-    background: #CDECFE;
     border-radius: 7px;
     padding: 10px;
 
@@ -78,4 +77,25 @@
     padding: 5px;
     margin: px;
   }
+  
+  .timeline_text_container {
+    background: #CDECFE;
+    padding: 10px;
+  }
+  .timeline_slide_preview_item {
+    width: 250px;
+    height: 140px;
+    
+   
+  }
+
+  .timeline__mid__images {
+    .active{
+      border: 4px solid #0693E3;
+    }
+  }
+  .timeline_slide_preview_item:hover {
+    border: 4px solid #0693E3;
+  }
+  
 }

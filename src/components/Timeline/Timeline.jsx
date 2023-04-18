@@ -1,22 +1,23 @@
+import { DeleteOutlined, PlusCircleFilled } from '@ant-design/icons';
 import { Slider } from 'antd';
-import { PlayBold } from '../../assets/icons/PlayBold';
 import { MusicBold } from '../../assets/icons/MusicBold';
+import { PlayBold } from '../../assets/icons/PlayBold';
 import { TextBold } from '../../assets/icons/TextBold';
 import { ZoomIn } from '../../assets/icons/ZoomIn';
 import { ZoomOut } from '../../assets/icons/ZoomOut';
-import tl1 from '../../assets/img/tl1.png';
-import tl2 from '../../assets/img/tl2.png';
-import tl3 from '../../assets/img/tl3.png';
-import tl4 from '../../assets/img/tl4.png';
-import tl5 from '../../assets/img/tl5.png';
 import audioscrub from '../../assets/img/audioscrub.png';
-import textscrub from '../../assets/img/textscrub.png';
-import './Timeline.scss';
 import useSlidesStore from '../../store/useSlidesStore';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DEFAULT_SLIDE_OBJECT } from '../../utils/constants';
+import './Timeline.scss';
 
 function Timeline() {
   const currentSlide = useSlidesStore((state) => state.currentSlide);
+  const currentSlideIndex = useSlidesStore((state) => state.currentSlideIndex);
+  const updateCurrentSlideIndex = useSlidesStore(
+    (state) => state.updateCurrentSlideIndex
+  );
+  const slides = useSlidesStore((state) => state.slides);
+  const updateSlides = useSlidesStore((state) => state.updateSlides);
   const updateCurrentSlide = useSlidesStore(
     (state) => state.updateCurrentSlide
   );
@@ -26,6 +27,19 @@ function Timeline() {
     newTextList.splice(index, 1);
     let updatedSlide = { ...currentSlide, texts: newTextList };
     updateCurrentSlide(updatedSlide);
+  };
+
+  const handleAddNew = () => {
+    const newSlide = DEFAULT_SLIDE_OBJECT;
+    const allSlides = [...slides];
+    updateCurrentSlide(newSlide);
+    updateCurrentSlideIndex(allSlides.length);
+    updateSlides([...allSlides, newSlide]);
+  };
+
+  const handleSlideClick = (slide, index) => {
+    updateCurrentSlide(slide);
+    updateCurrentSlideIndex(index);
   };
 
   return (
@@ -63,27 +77,38 @@ function Timeline() {
           <div>7:40s</div>
         </div>
         <div className="timeline__mid__images">
-          <img src={tl1} alt="1" />
-          <img src={tl2} alt="2" />
-          <img src={tl3} alt="3" />
-          <img src={tl4} alt="4" />
-          <img src={tl5} alt="5" />
+          {/* <img src={tl1} alt="1" /> */}
+          {slides?.map((slide, i) => (
+            <div
+              onClick={() => handleSlideClick(slide, i)}
+              className={`timeline_slide_preview_item ${
+                currentSlideIndex === i ? 'active' : ''
+              } `}
+              style={{
+                backgroundColor: slide.backgroundColor
+              }}
+            >
+              {' '}
+            </div>
+          ))}
+          <PlusCircleFilled
+            style={{ fontSize: '46px', margin: '10px' }}
+            onClick={handleAddNew}
+          />
         </div>
         <div className="timeline__mid__audio">
           <img src={audioscrub} alt="audio" />
         </div>
         <div className="timeline__mid__audio timeline_text_group">
-          {currentSlide?.texts?.map((text, i) => (
-            <>
-              <span key={i} className="timeline_text">
-                {text?.text}
-                {JSON.stringify(text)}
-              </span>
-              <DeleteOutlined onClick={(e) => deleteTextItem(i)} />
-            </>
+          {currentSlide?.texts?.map((text, index) => (
+            <span key={index} className="timeline_text_container">
+              <span className="timeline_text">{text?.text}</span>
+              <DeleteOutlined
+                style={{ marginLeft: '5px' }}
+                onClick={(e) => deleteTextItem(index)}
+              />
+            </span>
           )) ?? ''}
-          {/* // <span className="timeline_text"></span>
-          // <img src={textscrub} alt="text" /> */}
         </div>
       </div>
       <div className="timeline__right">

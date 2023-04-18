@@ -7,8 +7,23 @@ import { Redo } from '../../assets/icons/Redo';
 import { Undo } from '../../assets/icons/Undo';
 import logo from '../../assets/img/logo.png';
 import './Header.scss';
+import useSlidesStore from '../../store/useSlidesStore';
 
 function Header() {
+  const isPlay = useSlidesStore((state) => state.play);
+  const updatePlay = useSlidesStore((state) => state.updatePlay);
+  const updateIsRecording = useSlidesStore((state) => state.updateIsRecording);
+  const isRecording = useSlidesStore((state) => state.isRecording);
+
+  const handlePreview = () => {
+    updatePlay(true);
+  };
+
+  const handleSave = () => {
+    updatePlay(true);
+    updateIsRecording(true);
+  };
+
   return (
     <header className="header">
       <div className="header__logo">
@@ -30,8 +45,16 @@ function Header() {
           <div className="buttons__time">
             <Clock /> 30 Sec
           </div>
-          <Button icon={<Play />}>Preview</Button>
-          <Button type="primary">Save</Button>
+          <Button
+            disabled={isPlay || isRecording}
+            onClick={handlePreview}
+            icon={<Play />}
+          >
+            Preview
+          </Button>
+          <Button onClick={handleSave} type="primary">
+            Save
+          </Button>
         </div>
       </div>
     </header>

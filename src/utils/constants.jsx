@@ -21,3 +21,13 @@ export const FONT_OPTIONS = Array.from({ length: 120 }, (x, i) => ({
   value: i + 1,
   label: i + 1
 }));
+
+export const DEFAULT_SLIDE_OBJECT = {
+  images: [],
+  previewImages: [],
+  texts: [],
+  audioFile: '',
+  previewAudio: '',
+  backgroundColor: '#fff',
+  duration: 0
+};

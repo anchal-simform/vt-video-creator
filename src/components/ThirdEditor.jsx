@@ -23,15 +23,7 @@ const ANIMATION_EASINGS = [
   { name: 'StrongEaseOut', color: 'green' },
   { name: 'StrongEaseInOut', color: 'green' }
 ];
-let defaultSlideObject = {
-  images: [],
-  previewImages: [],
-  texts: [],
-  audioFile: '',
-  previewAudio: '',
-  backgroundColor: '',
-  duration: 0
-};
+
 const ThirdEditor = () => {
   const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
