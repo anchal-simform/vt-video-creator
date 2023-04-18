@@ -17,41 +17,7 @@ export const ANIMATION_EASINGS = [
   { value: 'StrongEaseInOut', label: 'StrongEaseInOut' }
 ];
 
-export const FONT_OPTIONS = [
-  { value: '2', label: '2' },
-  { value: '4', label: '4' },
-  { value: '6', label: '6' },
-  { value: '8', label: '8' },
-  { value: '10', label: '10' },
-  { value: '12', label: '12' },
-  { value: '14', label: '14' },
-  { value: '16', label: '16' },
-  { value: '18', label: '18' },
-  { value: '20', label: '20' },
-  { value: '22', label: '22' },
-  { value: '24', label: '24' },
-  { value: '26', label: '26' },
-  { value: '28', label: '28' },
-  { value: '30', label: '30' },
-  { value: '32', label: '32' },
-  { value: '34', label: '34' },
-  { value: '36', label: '36' },
-  { value: '38', label: '38' },
-  { value: '40', label: '40' },
-  { value: '42', label: '42' },
-  { value: '44', label: '44' },
-  { value: '46', label: '46' },
-  { value: '48', label: '48' },
-  { value: '50', label: '50' },
-  { value: '52', label: '52' },
-  { value: '54', label: '54' },
-  { value: '56', label: '56' },
-  { value: '58', label: '58' },
-  { value: '60', label: '60' },
-  { value: '62', label: '62' },
-  { value: '66', label: '66' },
-  { value: '70', label: '70' },
-  { value: '74', label: '74' },
-  { value: '78', label: '78' },
-  { value: '82', label: '82' }
-];
+export const FONT_OPTIONS = Array.from({ length: 120 }, (x, i) => ({
+  value: i + 1,
+  label: i + 1
+}));
