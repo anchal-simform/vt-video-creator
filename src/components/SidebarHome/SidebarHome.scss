@@ -1,0 +1,50 @@
+@use "../../assets/scss/variables.scss" as *;
+
+.sidebarhome {
+  height: calc(100vh - 79px);
+  width: 199px;
+  padding: 50px 20px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid $clr-neutral-bg;
+  overflow: auto;
+  &__button {
+    padding: 10px 10px;
+    height: 44px;
+    width: 100%;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin-bottom: 40px;
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex: 1 1 100%;
+    list-style: none;
+    &__item {
+      a {
+        text-decoration: none;
+        color: $clr-text-dark;
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 7px;
+        border-radius: 8px;
+      }
+      &.active {
+        a {
+          background-color: $clr-neutral-bg;
+        }
+      }
+      &.separator {
+        margin-top: auto;
+      }
+    }
+  }
+}
