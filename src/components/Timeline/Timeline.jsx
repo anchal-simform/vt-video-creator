@@ -1,19 +1,33 @@
-import { Slider } from "antd";
-import { PlayBold } from "../../assets/icons/PlayBold";
-import { MusicBold } from "../../assets/icons/MusicBold";
-import { TextBold } from "../../assets/icons/TextBold";
-import { ZoomIn } from "../../assets/icons/ZoomIn";
-import { ZoomOut } from "../../assets/icons/ZoomOut";
-import tl1 from "../../assets/img/tl1.png";
-import tl2 from "../../assets/img/tl2.png";
-import tl3 from "../../assets/img/tl3.png";
-import tl4 from "../../assets/img/tl4.png";
-import tl5 from "../../assets/img/tl5.png";
-import audioscrub from "../../assets/img/audioscrub.png";
-import textscrub from "../../assets/img/textscrub.png";
-import "./Timeline.scss";
+import { Slider } from 'antd';
+import { PlayBold } from '../../assets/icons/PlayBold';
+import { MusicBold } from '../../assets/icons/MusicBold';
+import { TextBold } from '../../assets/icons/TextBold';
+import { ZoomIn } from '../../assets/icons/ZoomIn';
+import { ZoomOut } from '../../assets/icons/ZoomOut';
+import tl1 from '../../assets/img/tl1.png';
+import tl2 from '../../assets/img/tl2.png';
+import tl3 from '../../assets/img/tl3.png';
+import tl4 from '../../assets/img/tl4.png';
+import tl5 from '../../assets/img/tl5.png';
+import audioscrub from '../../assets/img/audioscrub.png';
+import textscrub from '../../assets/img/textscrub.png';
+import './Timeline.scss';
+import useSlidesStore from '../../store/useSlidesStore';
+import { DeleteOutlined } from '@ant-design/icons';
 
 function Timeline() {
+  const currentSlide = useSlidesStore((state) => state.currentSlide);
+  const updateCurrentSlide = useSlidesStore(
+    (state) => state.updateCurrentSlide
+  );
+
+  const deleteTextItem = (index) => {
+    const newTextList = [...currentSlide?.texts];
+    newTextList.splice(index, 1);
+    let updatedSlide = { ...currentSlide, texts: newTextList };
+    updateCurrentSlide(updatedSlide);
+  };
+
   return (
     <div className="timeline">
       <div className="timeline__left">
@@ -49,17 +63,27 @@ function Timeline() {
           <div>7:40s</div>
         </div>
         <div className="timeline__mid__images">
-          <img src={tl1} alt="" />
-          <img src={tl2} alt="" />
-          <img src={tl3} alt="" />
-          <img src={tl4} alt="" />
-          <img src={tl5} alt="" />
+          <img src={tl1} alt="1" />
+          <img src={tl2} alt="2" />
+          <img src={tl3} alt="3" />
+          <img src={tl4} alt="4" />
+          <img src={tl5} alt="5" />
         </div>
         <div className="timeline__mid__audio">
           <img src={audioscrub} alt="audio" />
         </div>
-        <div className="timeline__mid__audio">
-          <img src={textscrub} alt="text" />
+        <div className="timeline__mid__audio timeline_text_group">
+          {currentSlide?.texts?.map((text, i) => (
+            <>
+              <span key={i} className="timeline_text">
+                {text?.text}
+                {JSON.stringify(text)}
+              </span>
+              <DeleteOutlined onClick={(e) => deleteTextItem(i)} />
+            </>
+          )) ?? ''}
+          {/* // <span className="timeline_text"></span>
+          // <img src={textscrub} alt="text" /> */}
         </div>
       </div>
       <div className="timeline__right">
