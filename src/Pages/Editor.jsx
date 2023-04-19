@@ -7,7 +7,6 @@ import '../styles/Editor.scss';
 
 function Editor() {
   const [activeItem, setActiveItem] = useState('text');
-  console.log({ activeItem });
   return (
     <div className="editor">
       <div className="editor__top">

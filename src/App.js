@@ -9,7 +9,7 @@ function App() {
     <div className="App wrapper">
       <Routes>
         <Route
-          path={'/'}
+          path={'/editor'}
           element={
             <>
               <Header />
@@ -18,7 +18,7 @@ function App() {
           }
         />
         <Route
-          path="/home"
+          path="/"
           element={
             <>
               <Home />
