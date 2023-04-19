@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState, useTransition } from 'react';
-import { Image, Layer, Rect, Stage, Text } from 'react-konva';
+import React, { useEffect, useRef, useState, useTransition } from 'react';
+import { Image, Layer, Rect, Stage, Text, Transformer } from 'react-konva';
 import Konva from 'konva';
+import useImage from 'use-image';
 import useSlidesStore from '../../store/useSlidesStore';
 import './Viewport.scss';
+import ResizableImage from './ResizableImage';
 
 function Viewport() {
   const [dimensions, setDimensions] = useState({
@@ -43,20 +45,47 @@ function Viewport() {
     }
   }, []);
 
-  const handleTextDragEnd = (event) => {
+  const handleTextDragEnd = (event, index) => {
     const textNode = event.target;
-    // setTexts(
-    //   texts.map((text) => {
-    //     if (text.id === textNode.attrs.id) {
-    //       return {
-    //         ...text,
-    //         x: textNode.attrs.x,
-    //         y: textNode.attrs.y
-    //       };
-    //     }
-    //     return text;
-    //   })
-    // );
+    const newTextList = [...currentSlide.texts];
+    const text = {
+      ...newTextList[index],
+      x: textNode.attrs.x,
+      y: textNode.attrs.y
+    };
+
+    newTextList[index] = text;
+    const newSlide = {
+      ...currentSlide,
+      texts: newTextList
+    };
+    updateCurrentSlide(newSlide);
+    const newSlides =
+      slides?.map((obj, i) => (i === currentSlideIndex ? newSlide : obj)) ?? [];
+    updateSlides(newSlides);
+  };
+
+  const handleImageDragEnd = (event, img, index) => {
+    const imageNode = event.target;
+    const newImageList = [...currentSlide.images];
+    const image = {
+      ...newImageList[index],
+      x: imageNode.attrs.x,
+      y: imageNode.attrs.y
+    };
+
+    newImageList[index] = image;
+    const newPreviewImageList = [...currentSlide.previewImages];
+    newPreviewImageList[index] = image;
+    const newSlide = {
+      ...currentSlide,
+      images: newImageList,
+      previewImages: newPreviewImageList
+    };
+    updateCurrentSlide(newSlide);
+    const newSlides =
+      slides?.map((obj, i) => (i === currentSlideIndex ? newSlide : obj)) ?? [];
+    updateSlides(newSlides);
   };
 
   const removeAnimationBeforePlaying = () => {
@@ -66,6 +95,7 @@ function Viewport() {
     const newSlide = { ...currentSlide, texts: allTexts };
     updateCurrentSlide(newSlide);
   };
+
   const playAnimation = () => {
     removeAnimationBeforePlaying();
     setTimeout(() => {
@@ -179,6 +209,26 @@ function Viewport() {
     }
   };
 
+  const handleResizeimage = (event, img, index) => {
+    const newImageList = [...currentSlide.images];
+    const image = {
+      ...img
+    };
+
+    newImageList[index] = image;
+    const newPreviewImageList = [...currentSlide.previewImages];
+    newPreviewImageList[index] = image;
+    const newSlide = {
+      ...currentSlide,
+      images: newImageList,
+      previewImages: newPreviewImageList
+    };
+    updateCurrentSlide(newSlide);
+    const newSlides =
+      slides?.map((obj, i) => (i === currentSlideIndex ? newSlide : obj)) ?? [];
+    updateSlides(newSlides);
+  };
+
   useEffect(() => {
     if (play) {
       playAnimation();
@@ -209,19 +259,31 @@ function Viewport() {
           ></Rect>
 
           {currentSlide?.images?.map((img, i) => (
-            <Image
-              height={250}
-              width={250}
-              key={i}
-              image={img}
-              draggable={true}
-            />
+            <React.Fragment key={i}>
+              <ResizableImage
+                src={img.image}
+                onChange={handleResizeimage}
+                onDragEnd={handleImageDragEnd}
+                imageDetails={img}
+                index={i}
+              />
+            </React.Fragment>
+            // <Image
+            //   height={250}
+            //   width={250 * ASPECT_RATIO}
+            //   key={i}
+            //   x={img.x}
+            //   y={img.y}
+            //   image={img.image}
+            //   draggable={true}
+            //   onDragEnd={(e) => handleImageDragEnd(e, i)}
+            // />
           ))}
           {currentSlide?.texts.map((text, i) => (
             <Text
               key={i}
               ref={(el) => (myRefs.current[i] = el)}
-              // onDragEnd={handleTextDragEnd}
+              onDragEnd={(e) => handleTextDragEnd(e, i)}
               text={text.text}
               fontSize={text.fontSize}
               fill={text.colour}

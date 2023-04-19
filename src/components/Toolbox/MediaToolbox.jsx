@@ -2,6 +2,9 @@ import React, { useRef } from 'react';
 import useSlidesStore from '../../store/useSlidesStore';
 import { DeleteOutlined } from '@ant-design/icons';
 
+const ASPECT_RATIO = 16 / 9;
+const DEFAULT_HEIGHT = 250;
+
 function MediaToolbox() {
   // Use current slide to display here
   const slides = useSlidesStore((state) => state.slides);
@@ -23,11 +26,20 @@ function MediaToolbox() {
     }
     const url = window.URL.createObjectURL(file);
     const img = new window.Image();
+    const newImage = {
+      id: Date.now(),
+      image: img,
+      previewImage: file,
+      x: 0,
+      y: 0,
+      height: DEFAULT_HEIGHT,
+      width: DEFAULT_HEIGHT * ASPECT_RATIO
+    };
     let slide = { ...currentSlide };
     slide = {
       ...slide,
-      images: [...slide.images, img],
-      previewImages: [...slide.previewImages, file]
+      images: [...slide.images, newImage],
+      previewImages: [...slide.previewImages, newImage]
     };
     img.onload = () => {
       window.URL.revokeObjectURL(url);
@@ -44,9 +56,7 @@ function MediaToolbox() {
 
   const handleAudioFileSelect = (event) => {
     const file = event.target.files[0];
-    console.log('File Type is ', file.type);
-
-    if (!file.type.startsWith('audio/')) {
+    if (!file?.type.startsWith('audio/')) {
       console.log('Please select an audio file.');
       return;
     }
@@ -57,7 +67,6 @@ function MediaToolbox() {
     //   setAudioSelected(file);
     // }
   };
-  console.log({ audioSelected });
   const deleteImageItem = (index) => {
     const newImageList = [...currentSlide.images];
     newImageList.splice(index, 1);
@@ -97,7 +106,7 @@ function MediaToolbox() {
               <div className="image_item" key={i}>
                 <img
                   alt="preview"
-                  src={URL.createObjectURL(img)}
+                  src={URL.createObjectURL(img.previewImage)}
                   width="160"
                   height="60"
                 />

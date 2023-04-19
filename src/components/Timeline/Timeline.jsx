@@ -1,4 +1,8 @@
-import { DeleteOutlined, PlusCircleFilled } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  PlayCircleTwoTone,
+  PlusCircleFilled
+} from '@ant-design/icons';
 import { Slider } from 'antd';
 import { MusicBold } from '../../assets/icons/MusicBold';
 import { PlayBold } from '../../assets/icons/PlayBold';
@@ -42,15 +46,22 @@ function Timeline() {
     updateCurrentSlideIndex(index);
   };
 
+  const handlePlayCompleteVideo = () => {
+    // Play animation for first 5 secs and after sometime start playing video again
+  };
+
   return (
     <div className="timeline">
       <div className="timeline__left">
-        <PlayBold />
+        <PlayCircleTwoTone
+          onClick={handlePlayCompleteVideo}
+          style={{ fontSize: '40px' }}
+        />
         <MusicBold />
         <TextBold />
       </div>
       <div className="timeline__mid">
-        <div className="timeline__mid__grid">
+        {/* <div className="timeline__mid__grid">
           <div>0:00s</div>
           <div>0:20s</div>
           <div>0:40s</div>
@@ -75,11 +86,11 @@ function Timeline() {
           <div>7:00s</div>
           <div>7:20s</div>
           <div>7:40s</div>
-        </div>
+        </div> */}
         <div className="timeline__mid__images">
-          {/* <img src={tl1} alt="1" /> */}
           {slides?.map((slide, i) => (
             <div
+              key={i}
               onClick={() => handleSlideClick(slide, i)}
               className={`timeline_slide_preview_item ${
                 currentSlideIndex === i ? 'active' : ''
@@ -88,7 +99,39 @@ function Timeline() {
                 backgroundColor: slide.backgroundColor
               }}
             >
-              {' '}
+              <div
+                style={{
+                  padding: '10px'
+                }}
+                className="image_list"
+              >
+                {slide.previewImages?.map((img, i) => (
+                  <div className="image_item" key={i}>
+                    <img
+                      alt="preview"
+                      src={URL.createObjectURL(img.previewImage)}
+                      width="45"
+                      height="45"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div
+                style={{
+                  padding: '10px'
+                }}
+                className="text_list_box"
+              >
+                {currentSlide?.texts?.map((text, index) => (
+                  <span key={index} className="timeline_text_container">
+                    <span className="timeline_text">{text?.text}</span>
+                    <DeleteOutlined
+                      style={{ marginLeft: '5px' }}
+                      onClick={(e) => deleteTextItem(index)}
+                    />
+                  </span>
+                )) ?? ''}
+              </div>
             </div>
           ))}
           <PlusCircleFilled

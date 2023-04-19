@@ -43,7 +43,8 @@ function Header() {
           </div>
           <div className="buttons__divider" />
           <div className="buttons__time">
-            <Clock /> 30 Sec
+            <Clock />
+            30 Sec
           </div>
           <Button
             disabled={isPlay || isRecording}

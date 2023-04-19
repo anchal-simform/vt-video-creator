@@ -85,17 +85,24 @@
   .timeline_slide_preview_item {
     width: 250px;
     height: 140px;
-    
-   
   }
 
   .timeline__mid__images {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     .active{
       border: 4px solid #0693E3;
     }
   }
   .timeline_slide_preview_item:hover {
     border: 4px solid #0693E3;
+  }
+
+  .text_list_box {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   
 }
