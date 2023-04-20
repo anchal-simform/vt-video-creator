@@ -1,19 +1,15 @@
-import {
-  DeleteOutlined,
-  PlayCircleTwoTone,
-  PlusCircleFilled
-} from '@ant-design/icons';
+import { DeleteOutlined, PlusCircleFilled } from '@ant-design/icons';
 import { Slider } from 'antd';
 import { MusicBold } from '../../assets/icons/MusicBold';
 import { PlayBold } from '../../assets/icons/PlayBold';
 import { TextBold } from '../../assets/icons/TextBold';
 import { ZoomIn } from '../../assets/icons/ZoomIn';
 import { ZoomOut } from '../../assets/icons/ZoomOut';
-import audioscrub from '../../assets/img/audioscrub.png';
 import useSlidesStore from '../../store/useSlidesStore';
-import { DEFAULT_SLIDE_OBJECT } from '../../utils/constants';
-import './Timeline.scss';
 import { sleep } from '../../utils/commonFunction';
+import { DEFAULT_SLIDE_OBJECT } from '../../utils/constants';
+import Waveform from '../Waveform/Waveform';
+import './Timeline.scss';
 
 function Timeline() {
   const currentSlide = useSlidesStore((state) => state.currentSlide);
@@ -27,8 +23,8 @@ function Timeline() {
     (state) => state.updateCurrentSlide
   );
   const updateIsRecording = useSlidesStore((state) => state.updateIsRecording);
+  const updateAudio = useSlidesStore((state) => state.updateAudio);
 
-  const play = useSlidesStore((state) => state.play);
   const updatePlay = useSlidesStore((state) => state.updatePlay);
   const audioSelected = useSlidesStore((state) => state.audio);
 
@@ -37,6 +33,10 @@ function Timeline() {
     newTextList.splice(index, 1);
     let updatedSlide = { ...currentSlide, texts: newTextList };
     updateCurrentSlide(updatedSlide);
+    const newSlides = slides.map((obj, idx) =>
+      idx === currentSlideIndex ? updatedSlide : obj
+    );
+    updateSlides(newSlides);
   };
 
   const handleAddNew = () => {
@@ -53,15 +53,47 @@ function Timeline() {
   };
 
   const handlePlayCompleteVideo = async () => {
-    // updateIsRecording(true);
-    let index = 0;
-    let slide = slides[0];
-    const audio = new Audio(URL.createObjectURL(audioSelected));
-    await audio.play();
+    updateIsRecording(true);
 
     const totalDuration = slides.reduce(function (acc, obj) {
       return acc + obj.duration;
     }, 0);
+
+    const totalDurationInMs = (parseInt(totalDuration) + 1) * 1000;
+
+    let index = 0;
+    let slide = slides[0];
+    const audio = new Audio(URL.createObjectURL(audioSelected));
+    await audio.play();
+    const audioStream = audio.captureStream();
+
+    const canvas = document.querySelector('.konva_current_canvas canvas');
+    // const ctx = canvas.getContext('2d');
+    const videoStream = canvas.captureStream(30);
+
+    audioStream.getAudioTracks().forEach((track) => {
+      videoStream.addTrack(track);
+    });
+
+    const mediaRecorder = new MediaRecorder(videoStream);
+    let chunks = [];
+
+    mediaRecorder.ondataavailable = function (e) {
+      chunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = function (e) {
+      const blob = new Blob(chunks, { type: 'video/mp4' });
+      chunks = [];
+      const videoURL = URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      document.body.appendChild(a);
+      a.style = 'display: none';
+      a.href = videoURL;
+      a.download = 'video.mp4';
+      a.click();
+    };
+    await mediaRecorder.start();
 
     // // Play animation for first 5 secs and after sometime start playing video again
     // // First reset currentIndex and currentSlide to first slide
@@ -72,40 +104,68 @@ function Timeline() {
     await sleep(parseInt(slide.duration) * 1000);
     setTimeout(() => {
       updatePlay(false);
-    }, 100);
+    }, 0);
 
     setTimeout(async () => {
       slides.map(async (current, index) => {
         if (index === 0) {
           return;
         }
+
+        // if (index === slides.length - 1) {
+        //   setTimeout(async () => {
+        //     mediaRecorder.stop();
+        //     await audio.pause();
+        //     updateIsRecording(false);
+        //   }, (parseInt(current.duration) + 2) * 1000);
+        // }
+
         setTimeout(async () => {
           updatePlay(true);
           updateCurrentSlideIndex(index);
           updateCurrentSlide(current);
           await sleep(parseInt(current.duration) * 1000);
           updatePlay(false);
-        }, 100);
+        }, 0);
       });
-    }, 200);
+    }, 50);
+
     setTimeout(async () => {
+      mediaRecorder.stop();
       await audio.pause();
-      // updateIsRecording(false);
-    }, totalDuration * 1000);
+      updateIsRecording(false);
+    }, totalDurationInMs);
+  };
+
+  const handleAudioFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (!file?.type.startsWith('audio/')) {
+      console.log('Please select an audio file.');
+      return;
+    }
+    updateAudio(file);
   };
 
   return (
     <div className="timeline">
       <div className="timeline__left">
-        <PlayCircleTwoTone
-          onClick={handlePlayCompleteVideo}
-          style={{ fontSize: '40px' }}
-        />
-        <MusicBold />
+        <span onClick={handlePlayCompleteVideo} className="hand">
+          <PlayBold />
+        </span>
+        <label class="custom-file-upload">
+          <input
+            onChange={handleAudioFileSelect}
+            accept="audio/*"
+            type="file"
+            name=""
+            id=""
+          />
+          <MusicBold />
+        </label>
         <TextBold />
       </div>
       <div className="timeline__mid">
-        {/* <div className="timeline__mid__grid">
+        <div className="timeline__mid__grid">
           <div>0:00s</div>
           <div>0:20s</div>
           <div>0:40s</div>
@@ -130,7 +190,7 @@ function Timeline() {
           <div>7:00s</div>
           <div>7:20s</div>
           <div>7:40s</div>
-        </div> */}
+        </div>
         <div className="timeline__mid__images">
           {slides?.map((slide, i) => (
             <div
@@ -184,7 +244,11 @@ function Timeline() {
           />
         </div>
         <div className="timeline__mid__audio">
-          <img src={audioscrub} alt="audio" />
+          {audioSelected ? (
+            <Waveform audio={URL.createObjectURL(audioSelected)} />
+          ) : (
+            'No Audio Selected'
+          )}
         </div>
         <div className="timeline__mid__audio timeline_text_group">
           {currentSlide?.texts?.map((text, index) => (

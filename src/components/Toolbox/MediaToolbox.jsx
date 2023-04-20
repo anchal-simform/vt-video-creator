@@ -61,11 +61,6 @@ function MediaToolbox() {
       return;
     }
     updateAudio(file);
-    // setPreviewAudio(file);
-    // const url = window.URL.createObjectURL(file);
-    // if (file) {
-    //   setAudioSelected(file);
-    // }
   };
   const deleteImageItem = (index) => {
     const newImageList = [...currentSlide.images];
@@ -118,7 +113,7 @@ function MediaToolbox() {
           ''
         )}
       </div>
-      <div className="audio_toolbox_container">
+      {/* <div className="audio_toolbox_container">
         <label htmlFor="Upload audio"> Audio File</label>
         <input
           onChange={handleAudioFileSelect}
@@ -127,9 +122,9 @@ function MediaToolbox() {
           name=""
           id=""
         />
-      </div>
-      <div className="audio_preview">
-        {/* Selected audio and remove */}
+      </div> */}
+      {/* Selected audio and remove */}
+      {/* <div className="audio_preview">
         <div className="audio_preview_container">
           {audioSelected ? (
             <div>
@@ -147,7 +142,7 @@ function MediaToolbox() {
             ''
           )}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

@@ -23,6 +23,7 @@ function Header() {
   const updateCurrentSlide = useSlidesStore(
     (state) => state.updateCurrentSlide
   );
+
   const updateSlides = useSlidesStore((state) => state.updateSlides);
 
   const handlePreview = async () => {
@@ -38,13 +39,9 @@ function Header() {
 
   const handleDurationChange = (value) => {
     let slide = { ...currentSlide };
-
     slide.duration = parseInt(value);
-
     updateCurrentSlide(slide);
-
     // Update the slides array
-
     const index = currentSlideIndex;
     const newSlides = slides.map((obj, idx) => (idx === index ? slide : obj));
 
