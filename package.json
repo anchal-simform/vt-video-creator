@@ -23,6 +23,7 @@
     "react-tabs": "^6.0.0",
     "sass": "^1.62.0",
     "use-image": "^1.1.0",
+    "wavesurfer.js": "^6.6.3",
     "web-vitals": "^2.1.4",
     "zustand": "^4.3.7"
   },

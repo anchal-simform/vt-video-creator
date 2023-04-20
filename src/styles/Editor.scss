@@ -1,6 +1,6 @@
 @use '../assets/scss/variables.scss' as *;
 
-.editor {
+.editor   {
   height: calc(100vh - 79px);
   display: flex;
   flex-direction: column;
@@ -23,6 +23,9 @@
   &__bottom {
     flex-grow: 0;
     flex-shrink: 0;
+  }
+  .hand {
+    cursor: pointer;
   }
 }
 

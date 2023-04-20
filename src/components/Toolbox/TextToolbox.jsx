@@ -15,7 +15,7 @@ const { TextArea } = Input;
 
 function TextToolbox() {
   const [fontFamily, setFontFamily] = useState('Ariel');
-  const [fontSize, setFontSize] = useState('12');
+  const [fontSize, setFontSize] = useState('32');
   const [fontStyle, setFontStyle] = useState('bold');
   const [color, setColor] = useState('#000000');
   const [text, setText] = useState('');
@@ -37,7 +37,7 @@ function TextToolbox() {
   };
 
   const resetText = () => {
-    setFontSize('12');
+    setFontSize('32');
     setFontStyle('bold');
     setColor('#000000');
     setAlign('left');
@@ -50,8 +50,8 @@ function TextToolbox() {
     if (!text) return;
     const textNode = {
       id: Date.now(),
-      fontSize: parseInt(fontSize) ?? 50,
-      size: parseInt(fontSize) ?? 50,
+      fontSize: fontSize ? parseInt(fontSize) : 32,
+      size: fontSize ? parseInt(fontSize) : 32,
       colour: color,
       outAnimation: 'EaseOut',
       duration: 2,
@@ -90,6 +90,14 @@ function TextToolbox() {
     setText(value);
   };
 
+  const handleTextDecoration = () => {
+    if (textDecoration === 'underline') {
+      setTextDecoration('');
+    } else {
+      setTextDecoration('underline');
+    }
+  };
+
   return (
     <>
       <div className="toolbox_title">Text Properties</div>
@@ -121,23 +129,13 @@ function TextToolbox() {
             /> */}
             <Select
               //   className="dropdown-wrapper_fontsize"
-              defaultValue="12"
+              defaultValue="32"
+              value={fontSize}
               onChange={handleFontSize}
               options={FONT_OPTIONS}
             />
           </div>
           <div className="dropdown-wrapper">
-            {/* <Select
-              className="dropdown-wrapper_fontfamily"
-              defaultValue="Ariel"
-              onChange={handleChange}
-              options={[
-                { value: 'Ariel', label: 'Ariel' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled' }
-              ]}
-            /> */}
             <Select
               //   className="dropdown-wrapper_fontsize w-200"
               defaultValue="Linear"
@@ -168,7 +166,7 @@ function TextToolbox() {
               </span>
               <span className="btn">
                 <UnderlineOutlined
-                  onClick={() => setTextDecoration('underline')}
+                  onClick={handleTextDecoration}
                   style={{
                     color: textDecoration ? 'black' : 'grey'
                   }}

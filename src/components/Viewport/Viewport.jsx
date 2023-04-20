@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState, useTransition } from 'react';
-import { Image, Layer, Rect, Stage, Text, Transformer } from 'react-konva';
 import Konva from 'konva';
-import useImage from 'use-image';
+import React, { useEffect, useRef, useState } from 'react';
+import { Layer, Rect, Stage, Text } from 'react-konva';
 import useSlidesStore from '../../store/useSlidesStore';
-import './Viewport.scss';
 import ResizableImage from './ResizableImage';
+import './Viewport.scss';
 
 function Viewport() {
   const [dimensions, setDimensions] = useState({
@@ -17,10 +16,7 @@ function Viewport() {
 
   const isRecording = useSlidesStore((state) => state.isRecording);
   const updateIsRecording = useSlidesStore((state) => state.updateIsRecording);
-
   const totalDuration = useSlidesStore((state) => state.totalDuration);
-  const updateDuration = useSlidesStore((state) => state.updateTotalDuration);
-
   const audioSelected = useSlidesStore((state) => state.audio);
 
   // Use current slide to display here
@@ -133,79 +129,31 @@ function Viewport() {
 
   const recordVideo = async () => {
     try {
-      const totalDurationInMs = (parseInt(totalDuration) + 1.5) * 1000;
+      // const totalDurationInMs = (parseInt(currentSlide.duration) + 1.5) * 1000;
       if (!audioSelected) {
         updatePlay(false);
         updateIsRecording(false);
         alert('No Audio Selecte, Audio is mandatory');
         return;
       }
-      const audio = new Audio(URL.createObjectURL(audioSelected));
-      await audio.play();
-      const audioStream = audio.captureStream();
 
-      const canvas = document.querySelector('.konva_current_canvas canvas');
-      const ctx = canvas.getContext('2d');
-
-      const video = document.querySelector('video');
-
-      const videoStream = canvas.captureStream(30);
-
-      audioStream.getAudioTracks().forEach((track) => {
-        videoStream.addTrack(track);
-      });
-
-      const mediaRecorder = new MediaRecorder(videoStream);
-      let chunks = [];
-
-      mediaRecorder.ondataavailable = function (e) {
-        chunks.push(e.data);
-      };
-
-      mediaRecorder.onstop = function (e) {
-        const blob = new Blob(chunks, { type: 'video/mp4' });
-        console.log({ blob });
-        chunks = [];
-        const videoURL = URL.createObjectURL(blob);
-        // video.src = videoURL;
-        let a = document.createElement('a');
-        document.body.appendChild(a);
-        a.style = 'display: none';
-        a.href = videoURL;
-        a.download = 'video.mp4';
-        a.click();
-      };
-
-      updatePlay(false);
-      updateIsRecording(false);
+      // updatePlay(false);
+      // updateIsRecording(false);
       const tween = new Konva.Tween({
         node: textRef.current,
-        duration: parseInt(totalDuration) + 1.5,
+        duration: parseInt(currentSlide.duration) + 1.5,
         easing: Konva.Easings['EaseIn'],
         fontSize: 2,
         onFinish: async () => {
           console.log('Inside the on Finish function');
-          // mediaRecorder.stop();
-          // await audio.pause();
-          updatePlay(false);
-          updateIsRecording(false);
         }
       });
 
       await tween.play();
-
-      mediaRecorder.start();
-      setTimeout(async function () {
-        console.log('Inside the set timeout final function');
-        mediaRecorder.stop();
-        await audio.pause();
-        updatePlay(false);
-        updateIsRecording(false);
-      }, totalDurationInMs);
     } catch (error) {
       alert('Failed to record video');
-      updatePlay(false);
-      updateIsRecording(false);
+      // updatePlay(false);
+      // updateIsRecording(false);
     }
   };
 
@@ -290,13 +238,14 @@ function Viewport() {
               draggable={true}
               x={text.x}
               y={text.y}
-              textDecoration={text.decoration}
+              textDecoration={text.textDecoration}
               fontStyle={text.fontStyle}
               align={text.align}
             />
           ))}
 
           <Text
+            fontStyle="italic"
             key={'123'}
             text="."
             ref={textRef}
