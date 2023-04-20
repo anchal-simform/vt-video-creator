@@ -1,8 +1,6 @@
-import { useState } from 'react';
+import { Bucket } from '../../assets/icons/Bucket';
 import { Gallery } from '../../assets/icons/Gallery';
 import { Text } from '../../assets/icons/Text';
-import { Shapes } from '../../assets/icons/Shapes';
-import { Bucket } from '../../assets/icons/Bucket';
 import './Sidebar.scss';
 
 function Sidebar({ activeItem, setActiveItem }) {
@@ -31,7 +29,7 @@ function Sidebar({ activeItem, setActiveItem }) {
           <Text />
           <span>Text</span>
         </li>
-        <li
+        {/* <li
           className={
             activeItem === 'graphics'
               ? 'sidebar__list__item active'
@@ -41,7 +39,7 @@ function Sidebar({ activeItem, setActiveItem }) {
         >
           <Shapes />
           <span>Graphics</span>
-        </li>
+        </li> */}
         <li
           className={
             activeItem === 'colors'

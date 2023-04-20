@@ -54,14 +54,6 @@ function MediaToolbox() {
     updateSlides();
   };
 
-  const handleAudioFileSelect = (event) => {
-    const file = event.target.files[0];
-    if (!file?.type.startsWith('audio/')) {
-      console.log('Please select an audio file.');
-      return;
-    }
-    updateAudio(file);
-  };
   const deleteImageItem = (index) => {
     const newImageList = [...currentSlide.images];
     newImageList.splice(index, 1);
@@ -77,10 +69,6 @@ function MediaToolbox() {
     const newSlides =
       slides?.map((obj, i) => (idx === idx ? newSlide : obj)) ?? [];
     updateSlides(newSlides);
-  };
-
-  const handleAudioDelete = () => {
-    updateAudio(null);
   };
 
   return (
@@ -113,36 +101,6 @@ function MediaToolbox() {
           ''
         )}
       </div>
-      {/* <div className="audio_toolbox_container">
-        <label htmlFor="Upload audio"> Audio File</label>
-        <input
-          onChange={handleAudioFileSelect}
-          accept="audio/*"
-          type="file"
-          name=""
-          id=""
-        />
-      </div> */}
-      {/* Selected audio and remove */}
-      {/* <div className="audio_preview">
-        <div className="audio_preview_container">
-          {audioSelected ? (
-            <div>
-              <audio
-                ref={audioDemoRef}
-                src={window.URL.createObjectURL(audioSelected)}
-                controls
-              ></audio>
-              <DeleteOutlined
-                title="Delete Audio"
-                onClick={handleAudioDelete}
-              />
-            </div>
-          ) : (
-            ''
-          )}
-        </div>
-      </div> */}
     </>
   );
 }

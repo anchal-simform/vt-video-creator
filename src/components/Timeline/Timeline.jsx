@@ -1,5 +1,6 @@
 import { DeleteOutlined, PlusCircleFilled } from '@ant-design/icons';
 import { Slider } from 'antd';
+import React from 'react';
 import { MusicBold } from '../../assets/icons/MusicBold';
 import { PlayBold } from '../../assets/icons/PlayBold';
 import { TextBold } from '../../assets/icons/TextBold';
@@ -53,18 +54,19 @@ function Timeline() {
   };
 
   const handlePlayCompleteVideo = async () => {
-    updateIsRecording(true);
-
     const totalDuration = slides.reduce(function (acc, obj) {
       return acc + obj.duration;
     }, 0);
 
-    const totalDurationInMs = (parseInt(totalDuration) + 1) * 1000;
+    const totalDurationInMs = (parseInt(totalDuration) + 3) * 1000;
 
     let index = 0;
     let slide = slides[0];
     const audio = new Audio(URL.createObjectURL(audioSelected));
     await audio.play();
+
+    updateIsRecording(true);
+
     const audioStream = audio.captureStream();
 
     const canvas = document.querySelector('.konva_current_canvas canvas');
@@ -76,6 +78,7 @@ function Timeline() {
     });
 
     const mediaRecorder = new MediaRecorder(videoStream);
+    await mediaRecorder.start();
     let chunks = [];
 
     mediaRecorder.ondataavailable = function (e) {
@@ -93,10 +96,6 @@ function Timeline() {
       a.download = 'video.mp4';
       a.click();
     };
-    await mediaRecorder.start();
-
-    // // Play animation for first 5 secs and after sometime start playing video again
-    // // First reset currentIndex and currentSlide to first slide
 
     updateCurrentSlideIndex(index);
     updateCurrentSlide(slide);
@@ -107,19 +106,10 @@ function Timeline() {
     }, 0);
 
     setTimeout(async () => {
-      slides.map(async (current, index) => {
+      slides?.map(async (current, index) => {
         if (index === 0) {
           return;
         }
-
-        // if (index === slides.length - 1) {
-        //   setTimeout(async () => {
-        //     mediaRecorder.stop();
-        //     await audio.pause();
-        //     updateIsRecording(false);
-        //   }, (parseInt(current.duration) + 2) * 1000);
-        // }
-
         setTimeout(async () => {
           updatePlay(true);
           updateCurrentSlideIndex(index);
@@ -134,6 +124,7 @@ function Timeline() {
       mediaRecorder.stop();
       await audio.pause();
       updateIsRecording(false);
+      updatePlay(false);
     }, totalDurationInMs);
   };
 
@@ -273,4 +264,4 @@ function Timeline() {
   );
 }
 
-export default Timeline;
+export default React.memo(Timeline);

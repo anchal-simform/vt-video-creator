@@ -21,4 +21,4 @@ const Waveform = ({ audio }) => {
   return <div ref={containerRef} />;
 };
 
-export default Waveform;
+export default React.memo(Waveform);

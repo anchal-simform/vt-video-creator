@@ -90,6 +90,14 @@ function TextToolbox() {
     setText(value);
   };
 
+  const handleTextDecoration = () => {
+    if (textDecoration === 'underline') {
+      setTextDecoration('');
+    } else {
+      setTextDecoration('underline');
+    }
+  };
+
   return (
     <>
       <div className="toolbox_title">Text Properties</div>
@@ -158,7 +166,7 @@ function TextToolbox() {
               </span>
               <span className="btn">
                 <UnderlineOutlined
-                  onClick={() => setTextDecoration('underline')}
+                  onClick={handleTextDecoration}
                   style={{
                     color: textDecoration ? 'black' : 'grey'
                   }}
