@@ -70,7 +70,12 @@ function Header() {
             <Clock />
             <div className="dropdown-wrapper">
               <Select
-                //   className="dropdown-wrapper_fontsize"
+                showSearch
+                filterOption={(input, option) =>
+                  (option?.label ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
                 defaultValue="5"
                 value={currentSlide.duration}
                 onChange={handleDurationChange}

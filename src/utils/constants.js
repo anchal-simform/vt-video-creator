@@ -18,13 +18,13 @@ export const ANIMATION_EASINGS = [
 ];
 
 export const FONT_OPTIONS = Array.from({ length: 120 }, (x, i) => ({
-  value: i + 1,
-  label: i + 1
+  value: String(i + 1),
+  label: String(i + 1)
 }));
 
 export const DURATION_OPTIONS = Array.from({ length: 12 }, (x, i) => ({
-  value: (i + 1) * 5,
-  label: (i + 1) * 5
+  value: String((i + 1) * 5),
+  label: String((i + 1) * 5)
 }));
 
 export const DEFAULT_SLIDE_OBJECT = {
