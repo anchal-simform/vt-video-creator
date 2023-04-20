@@ -241,7 +241,7 @@ function Timeline() {
             'No Audio Selected'
           )}
         </div>
-        <div className="timeline__mid__audio timeline_text_group">
+        <div className="timeline__mid__text">
           {currentSlide?.texts?.map((text, index) => (
             <span key={index} className="timeline_text_container">
               <span className="timeline_text">{text?.text}</span>
