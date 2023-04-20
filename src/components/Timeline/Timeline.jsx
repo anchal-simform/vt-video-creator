@@ -13,6 +13,7 @@ import audioscrub from '../../assets/img/audioscrub.png';
 import useSlidesStore from '../../store/useSlidesStore';
 import { DEFAULT_SLIDE_OBJECT } from '../../utils/constants';
 import './Timeline.scss';
+import { sleep } from '../../utils/commonFunction';
 
 function Timeline() {
   const currentSlide = useSlidesStore((state) => state.currentSlide);
@@ -25,6 +26,11 @@ function Timeline() {
   const updateCurrentSlide = useSlidesStore(
     (state) => state.updateCurrentSlide
   );
+  const updateIsRecording = useSlidesStore((state) => state.updateIsRecording);
+
+  const play = useSlidesStore((state) => state.play);
+  const updatePlay = useSlidesStore((state) => state.updatePlay);
+  const audioSelected = useSlidesStore((state) => state.audio);
 
   const deleteTextItem = (index) => {
     const newTextList = [...currentSlide?.texts];
@@ -46,8 +52,46 @@ function Timeline() {
     updateCurrentSlideIndex(index);
   };
 
-  const handlePlayCompleteVideo = () => {
-    // Play animation for first 5 secs and after sometime start playing video again
+  const handlePlayCompleteVideo = async () => {
+    // updateIsRecording(true);
+    let index = 0;
+    let slide = slides[0];
+    const audio = new Audio(URL.createObjectURL(audioSelected));
+    await audio.play();
+
+    const totalDuration = slides.reduce(function (acc, obj) {
+      return acc + obj.duration;
+    }, 0);
+
+    // // Play animation for first 5 secs and after sometime start playing video again
+    // // First reset currentIndex and currentSlide to first slide
+
+    updateCurrentSlideIndex(index);
+    updateCurrentSlide(slide);
+    updatePlay(true);
+    await sleep(parseInt(slide.duration) * 1000);
+    setTimeout(() => {
+      updatePlay(false);
+    }, 100);
+
+    setTimeout(async () => {
+      slides.map(async (current, index) => {
+        if (index === 0) {
+          return;
+        }
+        setTimeout(async () => {
+          updatePlay(true);
+          updateCurrentSlideIndex(index);
+          updateCurrentSlide(current);
+          await sleep(parseInt(current.duration) * 1000);
+          updatePlay(false);
+        }, 100);
+      });
+    }, 200);
+    setTimeout(async () => {
+      await audio.pause();
+      // updateIsRecording(false);
+    }, totalDuration * 1000);
   };
 
   return (
@@ -122,13 +166,13 @@ function Timeline() {
                 }}
                 className="text_list_box"
               >
-                {currentSlide?.texts?.map((text, index) => (
+                {slide?.texts?.map((text, index) => (
                   <span key={index} className="timeline_text_container">
                     <span className="timeline_text">{text?.text}</span>
-                    <DeleteOutlined
+                    {/* <DeleteOutlined
                       style={{ marginLeft: '5px' }}
                       onClick={(e) => deleteTextItem(index)}
-                    />
+                    /> */}
                   </span>
                 )) ?? ''}
               </div>

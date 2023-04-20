@@ -177,7 +177,7 @@ function Viewport() {
       };
 
       updatePlay(false);
-      updateIsRecording(false);
+      // updateIsRecording(false);
       const tween = new Konva.Tween({
         node: textRef.current,
         duration: parseInt(totalDuration) + 1.5,
@@ -187,8 +187,8 @@ function Viewport() {
           console.log('Inside the on Finish function');
           // mediaRecorder.stop();
           // await audio.pause();
-          updatePlay(false);
-          updateIsRecording(false);
+          // updatePlay(false);
+          // updateIsRecording(false);
         }
       });
 
@@ -197,14 +197,14 @@ function Viewport() {
       mediaRecorder.start();
       setTimeout(async function () {
         console.log('Inside the set timeout final function');
-        mediaRecorder.stop();
-        await audio.pause();
-        updatePlay(false);
-        updateIsRecording(false);
+        // mediaRecorder.stop();
+        // await audio.pause();
+        // updatePlay(false);
+        // updateIsRecording(false);
       }, totalDurationInMs);
     } catch (error) {
       alert('Failed to record video');
-      updatePlay(false);
+      // updatePlay(false);
       updateIsRecording(false);
     }
   };

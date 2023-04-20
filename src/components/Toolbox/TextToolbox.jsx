@@ -121,7 +121,7 @@ function TextToolbox() {
             /> */}
             <Select
               //   className="dropdown-wrapper_fontsize"
-              defaultValue="12"
+              defaultValue="32"
               onChange={handleFontSize}
               options={FONT_OPTIONS}
             />
