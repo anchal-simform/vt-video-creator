@@ -128,7 +128,15 @@ function TextToolbox() {
               ]}
             /> */}
             <Select
-              //   className="dropdown-wrapper_fontsize"
+              style={{
+                width: '200px'
+              }}
+              showSearch
+              filterOption={(input, option) =>
+                (option?.label ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               defaultValue="32"
               value={fontSize}
               onChange={handleFontSize}
@@ -137,7 +145,6 @@ function TextToolbox() {
           </div>
           <div className="dropdown-wrapper">
             <Select
-              //   className="dropdown-wrapper_fontsize w-200"
               defaultValue="Linear"
               style={{
                 width: '200px'
