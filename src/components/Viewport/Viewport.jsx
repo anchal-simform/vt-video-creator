@@ -11,6 +11,8 @@ function Viewport() {
     height: 0
   });
 
+  const [demoTextFontSize, setDemoTextFontSize] = useState(1);
+
   const play = useSlidesStore((state) => state.play);
   const updatePlay = useSlidesStore((state) => state.updatePlay);
 
@@ -90,6 +92,14 @@ function Viewport() {
     });
     const newSlide = { ...currentSlide, texts: allTexts };
     updateCurrentSlide(newSlide);
+    // const allSlides = slides.map((slide, i) => {
+    //   const allTexts = currentSlide?.texts?.map((text) => {
+    //     return { ...text, fontSize: 1 };
+    //   });
+    //   const newSlide = { ...currentSlide, texts: allTexts };
+    //   return newSlide;
+    // });
+    // updateSlides(allSlides);
   };
 
   const playAnimation = () => {
@@ -124,7 +134,8 @@ function Viewport() {
     setTimeout(() => {
       console.log('Playing animation stopped');
       updatePlay(false);
-    }, parseInt(totalDuration) * 1000);
+      setDemoTextFontSize(1);
+    }, parseInt(totalDuration - 0.5) * 1000);
   };
 
   const recordVideo = async () => {
@@ -141,11 +152,13 @@ function Viewport() {
       // updateIsRecording(false);
       const tween = new Konva.Tween({
         node: textRef.current,
-        duration: parseInt(currentSlide.duration) + 1.5,
+        duration: parseInt(currentSlide.duration + 5),
         easing: Konva.Easings['EaseIn'],
-        fontSize: 2,
+        fontSize: demoTextFontSize + 1,
         onFinish: async () => {
           console.log('Inside the on Finish function');
+          setDemoTextFontSize(1);
+          updatePlay(false);
         }
       });
 
@@ -216,16 +229,6 @@ function Viewport() {
                 index={i}
               />
             </React.Fragment>
-            // <Image
-            //   height={250}
-            //   width={250 * ASPECT_RATIO}
-            //   key={i}
-            //   x={img.x}
-            //   y={img.y}
-            //   image={img.image}
-            //   draggable={true}
-            //   onDragEnd={(e) => handleImageDragEnd(e, i)}
-            // />
           ))}
           {currentSlide?.texts.map((text, i) => (
             <Text
@@ -249,7 +252,7 @@ function Viewport() {
             key={'123'}
             text="."
             ref={textRef}
-            fontSize={1}
+            fontSize={demoTextFontSize}
             draggable={true}
             x={0}
             y={0}
