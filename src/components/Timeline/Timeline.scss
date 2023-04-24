@@ -128,4 +128,12 @@
       padding: 6px 12px;
       cursor: pointer;
   }
+  .slide__delete {
+    width: 100%;
+    margin: 5px;
+    padding: 5px;
+    span {
+      float: right;
+    }
+  }
 }
