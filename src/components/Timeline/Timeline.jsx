@@ -1,11 +1,11 @@
 import {
+  DeleteFilled,
   DeleteOutlined,
   PauseCircleOutlined,
   PlusCircleFilled
 } from '@ant-design/icons';
 import { Slider } from 'antd';
-import { flushSync } from 'react-dom'; // Note: react-dom, not react
-import React, { useState, useTransition, useRef } from 'react';
+import React, { useRef, useTransition } from 'react';
 import { MusicBold } from '../../assets/icons/MusicBold';
 import { PlayBold } from '../../assets/icons/PlayBold';
 import { TextBold } from '../../assets/icons/TextBold';
@@ -160,6 +160,26 @@ function Timeline() {
     updateAudio(file);
   };
 
+  const deleteSlide = (e, index) => {
+    e?.stopPropagation();
+    const newSlides = [...slides];
+    newSlides.splice(index, 1);
+    updateSlides(newSlides);
+  };
+
+  const renderSlideDelete = (index) => {
+    if (slides.length === 1) return;
+
+    return (
+      <DeleteFilled
+        style={{
+          fontSize: '20px'
+        }}
+        onClick={(e) => deleteSlide(e, index)}
+      />
+    );
+  };
+
   return (
     <div className="timeline">
       <div className="timeline__left">
@@ -234,6 +254,7 @@ function Timeline() {
                 backgroundColor: slide.backgroundColor
               }}
             >
+              {/* <div className="slide__delete">{renderSlideDelete(i)}</div> */}
               <div
                 style={{
                   padding: '10px'

@@ -1,5 +1,5 @@
 import useImage from 'use-image';
-import './Viewport.scss';
+import '../Viewport/Viewport.scss';
 import ImageWithTransformer from './ImageWithTransformer';
 
 const ResizableImage = ({ src, imageDetails, onChange, onDragEnd, index }) => {

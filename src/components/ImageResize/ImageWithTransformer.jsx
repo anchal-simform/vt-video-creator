@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Image, Transformer } from 'react-konva';
 
-import './Viewport.scss';
+import '../Viewport/Viewport.scss';
 
 const ImageWithTransformer = ({
   image,

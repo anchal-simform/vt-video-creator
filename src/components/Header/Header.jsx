@@ -36,7 +36,6 @@ function Header() {
   };
 
   const handleMediaRecorder = (videoStream) => {
-    //
     const mediaRecorder = new MediaRecorder(videoStream);
     setTimeout(async () => {
       await mediaRecorder.start();
