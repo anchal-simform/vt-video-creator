@@ -2,7 +2,7 @@ import Konva from 'konva';
 import React, { useEffect, useRef, useState } from 'react';
 import { Layer, Rect, Stage, Text } from 'react-konva';
 import useSlidesStore from '../../store/useSlidesStore';
-import ResizableImage from './ResizableImage';
+import ResizableImage from '../ImageResize/ResizableImage';
 import './Viewport.scss';
 
 function Viewport() {
