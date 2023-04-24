@@ -156,8 +156,8 @@ function Header() {
         </Link>
         <div className="header__action__buttons">
           <div className="buttons__history">
-            <Undo />
-            <Redo />
+            {/* <Undo />
+            <Redo /> */}
           </div>
           <div className="buttons__divider" />
           <div className="buttons__time">
