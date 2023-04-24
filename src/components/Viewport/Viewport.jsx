@@ -90,6 +90,14 @@ function Viewport() {
     });
     const newSlide = { ...currentSlide, texts: allTexts };
     updateCurrentSlide(newSlide);
+    // const allSlides = slides.map((slide, i) => {
+    //   const allTexts = currentSlide?.texts?.map((text) => {
+    //     return { ...text, fontSize: 1 };
+    //   });
+    //   const newSlide = { ...currentSlide, texts: allTexts };
+    //   return newSlide;
+    // });
+    // updateSlides(allSlides);
   };
 
   const playAnimation = () => {
@@ -113,8 +121,19 @@ function Viewport() {
       tween.play();
       return { ...text, fontSize: text.size, size: text.size };
     });
-    const newSlide = { ...currentSlide, texts: t };
 
+    const newTween = new Konva.Tween({
+      node: textRef.current,
+      duration: parseInt(currentSlide.duration + 1),
+      easing: Konva.Easings['EaseIn'],
+      fontSize: 2,
+      onFinish: async () => {
+        console.log('Inside the on Finish function');
+        updatePlay(false);
+      }
+    });
+    newTween.play();
+    const newSlide = { ...currentSlide, texts: t };
     updateCurrentSlide(newSlide);
     const index = currentSlideIndex;
     const newSlides = slides.map((obj, idx) =>
@@ -124,7 +143,7 @@ function Viewport() {
     setTimeout(() => {
       console.log('Playing animation stopped');
       updatePlay(false);
-    }, parseInt(totalDuration) * 1000);
+    }, parseInt(totalDuration - 0.5) * 1000);
   };
 
   const recordVideo = async () => {
@@ -139,21 +158,22 @@ function Viewport() {
 
       // updatePlay(false);
       // updateIsRecording(false);
-      const tween = new Konva.Tween({
-        node: textRef.current,
-        duration: parseInt(currentSlide.duration) + 1.5,
-        easing: Konva.Easings['EaseIn'],
-        fontSize: 2,
-        onFinish: async () => {
-          console.log('Inside the on Finish function');
-        }
-      });
+      // const tween = new Konva.Tween({
+      //   node: textRef.current,
+      //   duration: parseInt(10),
+      //   easing: Konva.Easings['EaseIn'],
+      //   fontSize: 2,
+      //   onFinish: async () => {
+      //     console.log('Inside the on Finish function');
+      //     updatePlay(false);
+      //   }
+      // });
 
-      await tween.play();
+      // await tween.play();
     } catch (error) {
       alert('Failed to record video');
-      // updatePlay(false);
-      // updateIsRecording(false);
+      updatePlay(false);
+      updateIsRecording(false);
     }
   };
 
@@ -216,16 +236,6 @@ function Viewport() {
                 index={i}
               />
             </React.Fragment>
-            // <Image
-            //   height={250}
-            //   width={250 * ASPECT_RATIO}
-            //   key={i}
-            //   x={img.x}
-            //   y={img.y}
-            //   image={img.image}
-            //   draggable={true}
-            //   onDragEnd={(e) => handleImageDragEnd(e, i)}
-            // />
           ))}
           {currentSlide?.texts.map((text, i) => (
             <Text
@@ -249,7 +259,6 @@ function Viewport() {
             key={'123'}
             text="."
             ref={textRef}
-            fontSize={1}
             draggable={true}
             x={0}
             y={0}

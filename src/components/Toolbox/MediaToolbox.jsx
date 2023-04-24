@@ -13,10 +13,7 @@ function MediaToolbox() {
   const updateCurrentSlide = useSlidesStore(
     (state) => state.updateCurrentSlide
   );
-  const audioDemoRef = useRef(null);
   const updateSlides = useSlidesStore((state) => state.updateSlides);
-  const updateAudio = useSlidesStore((state) => state.updateAudio);
-  const audioSelected = useSlidesStore((state) => state.audio);
 
   const handleImageFileSelect = (event) => {
     const file = event.target.files[0];

@@ -1,6 +1,11 @@
-import { DeleteOutlined, PlusCircleFilled } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  PauseCircleOutlined,
+  PlusCircleFilled
+} from '@ant-design/icons';
 import { Slider } from 'antd';
-import React from 'react';
+import { flushSync } from 'react-dom'; // Note: react-dom, not react
+import React, { useState, useTransition, useRef } from 'react';
 import { MusicBold } from '../../assets/icons/MusicBold';
 import { PlayBold } from '../../assets/icons/PlayBold';
 import { TextBold } from '../../assets/icons/TextBold';
@@ -13,6 +18,7 @@ import Waveform from '../Waveform/Waveform';
 import './Timeline.scss';
 
 function Timeline() {
+  const [isPending, setTransition] = useTransition();
   const currentSlide = useSlidesStore((state) => state.currentSlide);
   const currentSlideIndex = useSlidesStore((state) => state.currentSlideIndex);
   const updateCurrentSlideIndex = useSlidesStore(
@@ -26,8 +32,10 @@ function Timeline() {
   const updateIsRecording = useSlidesStore((state) => state.updateIsRecording);
   const updateAudio = useSlidesStore((state) => state.updateAudio);
 
+  const play = useSlidesStore((state) => state.play);
   const updatePlay = useSlidesStore((state) => state.updatePlay);
   const audioSelected = useSlidesStore((state) => state.audio);
+  const audioPlaying = useRef(null);
 
   const deleteTextItem = (index) => {
     const newTextList = [...currentSlide?.texts];
@@ -53,39 +61,24 @@ function Timeline() {
     updateCurrentSlideIndex(index);
   };
 
-  const handlePlayCompleteVideo = async () => {
-    const totalDuration = slides.reduce(function (acc, obj) {
-      return acc + obj.duration;
-    }, 0);
+  const handlePlay = async () => {
+    setTimeout(() => {
+      handlePlayCompleteVideo();
+    }, 100);
+  };
 
-    const totalDurationInMs = (parseInt(totalDuration) + 3) * 1000;
-
-    let index = 0;
-    let slide = slides[0];
-    const audio = new Audio(URL.createObjectURL(audioSelected));
-    await audio.play();
-
-    updateIsRecording(true);
-
-    const audioStream = audio.captureStream();
-
-    const canvas = document.querySelector('.konva_current_canvas canvas');
-    // const ctx = canvas.getContext('2d');
-    const videoStream = canvas.captureStream(30);
-
-    audioStream.getAudioTracks().forEach((track) => {
-      videoStream.addTrack(track);
-    });
-
+  const handleMediaRecorder = (videoStream) => {
     const mediaRecorder = new MediaRecorder(videoStream);
-    await mediaRecorder.start();
+    setTimeout(async () => {
+      await mediaRecorder.start();
+    }, 200);
     let chunks = [];
 
     mediaRecorder.ondataavailable = function (e) {
       chunks.push(e.data);
     };
 
-    mediaRecorder.onstop = function (e) {
+    mediaRecorder.onstop = async function (e) {
       const blob = new Blob(chunks, { type: 'video/mp4' });
       chunks = [];
       const videoURL = URL.createObjectURL(blob);
@@ -96,42 +89,72 @@ function Timeline() {
       a.download = 'video.mp4';
       a.click();
     };
+    return mediaRecorder;
+  };
 
-    updateCurrentSlideIndex(index);
-    updateCurrentSlide(slide);
-    updatePlay(true);
-    await sleep(parseInt(slide.duration) * 1000);
-    setTimeout(() => {
+  const switchSlides = async () => {
+    for (let i = 0; i < slides.length; i++) {
+      let index = i;
+      let current = slides[i];
+      updatePlay(true);
+      updateCurrentSlideIndex(index);
+      updateCurrentSlide(current);
+      await sleep(parseInt(current.duration) * 1000);
       updatePlay(false);
+    }
+  };
+
+  const handleRecordingStopped = async (mediaRecorder, audio) => {
+    await mediaRecorder.stop();
+    audio?.pause();
+    audioPlaying.current = null;
+    updatePlay(false);
+    updateIsRecording(false);
+  };
+
+  const startAudioStream = async () => {
+    const audio = new Audio(URL.createObjectURL(audioSelected));
+    audioPlaying.current = audio;
+    audio?.play();
+    const audioStream = audio.captureStream();
+    return { audioStream, audio };
+  };
+
+  const startVideoStream = async () => {
+    const canvas = document.querySelector('.konva_current_canvas canvas');
+    // const ctx = canvas.getContext('2d');
+    const videoStream = canvas.captureStream(30);
+    return videoStream;
+  };
+
+  const handlePlayCompleteVideo = async () => {
+    if (play || audioPlaying.current) return;
+    const totalDuration = slides.reduce(function (acc, obj) {
+      return acc + obj.duration;
     }, 0);
 
-    setTimeout(async () => {
-      slides?.map(async (current, index) => {
-        if (index === 0) {
-          return;
-        }
-        setTimeout(async () => {
-          updatePlay(true);
-          updateCurrentSlideIndex(index);
-          updateCurrentSlide(current);
-          await sleep(parseInt(current.duration) * 1000);
-          updatePlay(false);
-        }, 0);
-      });
-    }, 50);
+    const totalDurationInMs = (parseInt(totalDuration) + 1) * 1000;
+
+    const { audioStream, audio } = await startAudioStream();
+
+    const videoStream = await startVideoStream();
+
+    audioStream.getAudioTracks().forEach((track) => {
+      videoStream.addTrack(track);
+    });
+
+    const mediaRecorder = await handleMediaRecorder(videoStream);
 
     setTimeout(async () => {
-      mediaRecorder.stop();
-      await audio.pause();
-      updateIsRecording(false);
-      updatePlay(false);
+      handleRecordingStopped(mediaRecorder, audio);
     }, totalDurationInMs);
+    await switchSlides();
   };
 
   const handleAudioFileSelect = (event) => {
     const file = event.target.files[0];
     if (!file?.type.startsWith('audio/')) {
-      console.log('Please select an audio file.');
+      alert('Please select an audio file.');
       return;
     }
     updateAudio(file);
@@ -140,9 +163,26 @@ function Timeline() {
   return (
     <div className="timeline">
       <div className="timeline__left">
-        <span onClick={handlePlayCompleteVideo} className="hand">
-          <PlayBold />
-        </span>
+        {play ? (
+          <>
+            <PauseCircleOutlined
+              style={{
+                fontSize: '40px'
+              }}
+              onClick={() => {
+                if (play) {
+                  audioPlaying.current?.pause();
+                  audioPlaying.current = null;
+                  updatePlay(false);
+                }
+              }}
+            />
+          </>
+        ) : (
+          <span onClick={handlePlay} className="hand">
+            <PlayBold />
+          </span>
+        )}
         <label class="custom-file-upload">
           <input
             onChange={handleAudioFileSelect}
