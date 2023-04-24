@@ -1,5 +1,6 @@
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Add } from '../../assets/icons/Add';
 import { Archive } from '../../assets/icons/Archive';
 import { Element } from '../../assets/icons/Element';
@@ -9,21 +10,30 @@ import { Home } from '../../assets/icons/Home';
 import { InfoCircle } from '../../assets/icons/InfoCircle';
 import { LikeTag } from '../../assets/icons/LikeTag';
 import { Verify } from '../../assets/icons/Verify';
-
+import useSlidesStore from '../../store/useSlidesStore';
 import './SidebarHome.scss';
 
 function SidebarHome() {
+  const navigate = useNavigate();
+
+  const resetSlideStore = useSlidesStore((state) => state.resetSlideStore);
+  const handleNewVideoClick = () => {
+    resetSlideStore();
+    navigate('/editor');
+  };
+
   return (
     <div className="sidebarhome">
-      <Link to="/editor">
-        <Button
-          type="primary"
-          className="sidebarhome__button"
-          icon={<Add color="#FFF" />}
-        >
-          New Video
-        </Button>
-      </Link>
+      {/* <Link to="/editor"> */}
+      <Button
+        type="primary"
+        className="sidebarhome__button"
+        icon={<Add color="#FFF" />}
+        onClick={handleNewVideoClick}
+      >
+        New Video
+      </Button>
+      {/* </Link> */}
       <ul className="sidebarhome__list">
         <li className="sidebarhome__list__item active">
           <Link>

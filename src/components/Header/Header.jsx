@@ -1,5 +1,5 @@
 import { Button, Select } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from '../../assets/icons/ArrowLeft';
 import { Clock } from '../../assets/icons/Clock';
 import { Play } from '../../assets/icons/Play';
@@ -26,6 +26,8 @@ function Header() {
   const updateCurrentSlide = useSlidesStore(
     (state) => state.updateCurrentSlide
   );
+  const navigate = useNavigate();
+  const resetSlideStore = useSlidesStore((state) => state.resetSlideStore);
 
   const updateSlides = useSlidesStore((state) => state.updateSlides);
 
@@ -142,6 +144,11 @@ function Header() {
     handlePlayCompleteVideo();
   };
 
+  const handleBackClick = () => {
+    resetSlideStore();
+    navigate('/');
+  };
+
   return (
     <header className="header">
       <div className="header__logo">
@@ -149,7 +156,7 @@ function Header() {
       </div>
       <div className="header__action">
         <Link to="/">
-          <div className="header__action__back">
+          <div onClick={handleBackClick} className="header__action__back">
             <ArrowLeft />
             Go back
           </div>
