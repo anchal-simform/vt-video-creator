@@ -22,6 +22,16 @@ const useSlidesStore = create((set) => ({
   resetCurrentSlide: () =>
     set((state) => ({ currentSlide: DEFAULT_SLIDE_OBJECT })),
   updateAudio: (audio) => set(() => ({ audio: audio })),
-  updateIsRecording: (isRecording) => set(() => ({ isRecording: isRecording }))
+  updateIsRecording: (isRecording) => set(() => ({ isRecording: isRecording })),
+  resetSlideStore: () =>
+    set(() => ({
+      slides: [DEFAULT_SLIDE_OBJECT],
+      currentSlide: DEFAULT_SLIDE_OBJECT,
+      play: false,
+      currentSlideIndex: 0,
+      totalDuration: 5,
+      audio: null,
+      isRecording: false
+    }))
 }));
 export default useSlidesStore;

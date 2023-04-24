@@ -2,9 +2,16 @@ import ActionCard from '../ActionCard/ActionCard';
 import HomeCard from '../HomeCard/HomeCard';
 import { actionData, recentData, latestData } from '../../Pages/homedata';
 import './HomeMain.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useSlidesStore from '../../store/useSlidesStore';
 
 function HomeMain() {
+  const navigate = useNavigate();
+  const resetSlideStore = useSlidesStore((state) => state.resetSlideStore);
+  const handleNewVideoClick = () => {
+    resetSlideStore();
+    navigate('/editor');
+  };
   return (
     <div className="homemain">
       <h1 className="homemain__title">
@@ -14,15 +21,13 @@ function HomeMain() {
         {actionData.map((item, index) => {
           if (item.title === 'Create Video') {
             return (
-              <Link key={index} to="/editor">
-                <ActionCard
-                  icon={item.icon}
-                  title={item.title}
-                  description={item.description}
-                  key={index}
-                />
-                ;
-              </Link>
+              <ActionCard
+                action={handleNewVideoClick}
+                icon={item.icon}
+                title={item.title}
+                description={item.description}
+                key={index}
+              />
             );
           }
           return (

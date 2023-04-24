@@ -1,4 +1,4 @@
-import "./ActionCard.scss";
+import './ActionCard.scss';
 
 function ActionCard(props) {
   const { icon, title, description, action } = props;
