@@ -315,11 +315,11 @@ function Timeline() {
         </div>
       </div>
       <div className="timeline__right">
-        <ZoomIn />
+        {/* <ZoomIn />
         <div>
           <Slider vertical range step={10} defaultValue={[20, 50]} />
         </div>
-        <ZoomOut />
+        <ZoomOut /> */}
       </div>
     </div>
   );
