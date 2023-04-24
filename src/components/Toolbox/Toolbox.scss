@@ -105,22 +105,30 @@
   }
 
   .image_toolbox_container {
-    margin: 10px;
-    padding: 10px;
+    label {
+      margin-bottom: 10px;
+      display: inline-block;
+      font-weight: 700;
+    }
   }
   .audio_toolbox_container {
     margin: 10px;
     padding: 10px;
   }
   .image_list {
-    margin: 10px 0 10px 0 ;
-    border: 1px solid black;
-    padding: 5;
-
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
     .image_item {
-      padding: 5;
-      margin-top: 10px ;
-      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      background-color: $clr-neutral-bg;
+      border-radius: 10px;
+      img {
+        border-radius: 5px;
+      }
     }
   }
 }
