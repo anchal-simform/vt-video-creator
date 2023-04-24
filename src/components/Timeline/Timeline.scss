@@ -59,13 +59,13 @@
       // overflow: auto;
       height: 128px;
       width: 100%;
+      line-height: 128px;
       img {
         height: 128px;
       }
     }
     &__text {
-      margin-top: 20px;
-      height: 30px;
+      margin-top: 40px;
     }
   }
   &__right {
@@ -110,7 +110,7 @@
   }
 
   .timeline__mid__audio {
-     margin-top: 20px;
+     margin-top: 30px;
   }
 
   .text_list_box {
