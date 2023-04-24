@@ -68,7 +68,6 @@ function Timeline() {
   };
 
   const handleMediaRecorder = (videoStream) => {
-    //
     const mediaRecorder = new MediaRecorder(videoStream);
     setTimeout(async () => {
       await mediaRecorder.start();
@@ -79,38 +78,35 @@ function Timeline() {
       chunks.push(e.data);
     };
 
-    // mediaRecorder.onstop = async function (e) {
-    //   const blob = new Blob(chunks, { type: 'video/mp4' });
-    //   chunks = [];
-    //   const videoURL = URL.createObjectURL(blob);
-    //   let a = document.createElement('a');
-    //   document.body.appendChild(a);
-    //   a.style = 'display: none';
-    //   a.href = videoURL;
-    //   a.download = 'video.mp4';
-    //   a.click();
-    // };
-
+    mediaRecorder.onstop = async function (e) {
+      const blob = new Blob(chunks, { type: 'video/mp4' });
+      chunks = [];
+      const videoURL = URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      document.body.appendChild(a);
+      a.style = 'display: none';
+      a.href = videoURL;
+      a.download = 'video.mp4';
+      a.click();
+    };
     return mediaRecorder;
   };
 
   const switchSlides = async () => {
-    for (let index = 0; index < slides.length; index++) {
-      let current = slides[index];
+    for (let i = 0; i < slides.length; i++) {
+      let index = i;
+      let current = slides[i];
       updatePlay(true);
       updateCurrentSlideIndex(index);
       updateCurrentSlide(current);
       await sleep(parseInt(current.duration) * 1000);
       updatePlay(false);
-      if (index === slides.length - 1) {
-        updateIsRecording(false);
-      }
     }
   };
 
   const handleRecordingStopped = async (mediaRecorder, audio) => {
     await mediaRecorder.stop();
-    await audio.pause();
+    audio?.pause();
     audioPlaying.current = null;
     updatePlay(false);
     updateIsRecording(false);
@@ -119,7 +115,7 @@ function Timeline() {
   const startAudioStream = async () => {
     const audio = new Audio(URL.createObjectURL(audioSelected));
     audioPlaying.current = audio;
-    await audio.play();
+    audio?.play();
     const audioStream = audio.captureStream();
     return { audioStream, audio };
   };
@@ -149,11 +145,10 @@ function Timeline() {
 
     const mediaRecorder = await handleMediaRecorder(videoStream);
 
-    await switchSlides();
-
     setTimeout(async () => {
       handleRecordingStopped(mediaRecorder, audio);
-    }, totalDurationInMs); //totalDurationInMs
+    }, totalDurationInMs);
+    await switchSlides();
   };
 
   const handleAudioFileSelect = (event) => {

@@ -11,8 +11,6 @@ function Viewport() {
     height: 0
   });
 
-  const [demoTextFontSize, setDemoTextFontSize] = useState(1);
-
   const play = useSlidesStore((state) => state.play);
   const updatePlay = useSlidesStore((state) => state.updatePlay);
 
@@ -123,8 +121,19 @@ function Viewport() {
       tween.play();
       return { ...text, fontSize: text.size, size: text.size };
     });
-    const newSlide = { ...currentSlide, texts: t };
 
+    const newTween = new Konva.Tween({
+      node: textRef.current,
+      duration: parseInt(currentSlide.duration + 1),
+      easing: Konva.Easings['EaseIn'],
+      fontSize: 2,
+      onFinish: async () => {
+        console.log('Inside the on Finish function');
+        updatePlay(false);
+      }
+    });
+    newTween.play();
+    const newSlide = { ...currentSlide, texts: t };
     updateCurrentSlide(newSlide);
     const index = currentSlideIndex;
     const newSlides = slides.map((obj, idx) =>
@@ -134,7 +143,6 @@ function Viewport() {
     setTimeout(() => {
       console.log('Playing animation stopped');
       updatePlay(false);
-      setDemoTextFontSize(1);
     }, parseInt(totalDuration - 0.5) * 1000);
   };
 
@@ -150,23 +158,22 @@ function Viewport() {
 
       // updatePlay(false);
       // updateIsRecording(false);
-      const tween = new Konva.Tween({
-        node: textRef.current,
-        duration: parseInt(currentSlide.duration + 5),
-        easing: Konva.Easings['EaseIn'],
-        fontSize: demoTextFontSize + 1,
-        onFinish: async () => {
-          console.log('Inside the on Finish function');
-          setDemoTextFontSize(1);
-          updatePlay(false);
-        }
-      });
+      // const tween = new Konva.Tween({
+      //   node: textRef.current,
+      //   duration: parseInt(10),
+      //   easing: Konva.Easings['EaseIn'],
+      //   fontSize: 2,
+      //   onFinish: async () => {
+      //     console.log('Inside the on Finish function');
+      //     updatePlay(false);
+      //   }
+      // });
 
-      await tween.play();
+      // await tween.play();
     } catch (error) {
       alert('Failed to record video');
-      // updatePlay(false);
-      // updateIsRecording(false);
+      updatePlay(false);
+      updateIsRecording(false);
     }
   };
 
@@ -252,7 +259,6 @@ function Viewport() {
             key={'123'}
             text="."
             ref={textRef}
-            fontSize={demoTextFontSize}
             draggable={true}
             x={0}
             y={0}

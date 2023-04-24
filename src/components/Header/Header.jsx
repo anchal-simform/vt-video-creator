@@ -48,6 +48,7 @@ function Header() {
     };
 
     mediaRecorder.onstop = async function (e) {
+      console.log('Inside the handle on stop');
       const blob = new Blob(chunks, { type: 'video/mp4' });
       chunks = [];
       const videoURL = URL.createObjectURL(blob);
@@ -75,6 +76,7 @@ function Header() {
   };
 
   const handleRecordingStopped = async (mediaRecorder, audio) => {
+    console.log('Inside the handle recording saved');
     await mediaRecorder.stop();
     await audio.pause();
     // audioPlaying.current = null;
@@ -99,14 +101,18 @@ function Header() {
 
   const handlePlayCompleteVideo = async () => {
     if (isPlay) return;
+
+    if (!audioSelected) {
+      alert('Please select an audio file.');
+      return;
+    }
+
     const totalDuration = slides.reduce(function (acc, obj) {
       return acc + obj.duration;
     }, 0);
 
     const totalDurationInMs = (parseInt(totalDuration) + 1) * 1000;
-
     const { audioStream, audio } = await startAudioStream();
-
     const videoStream = await startVideoStream();
 
     audioStream.getAudioTracks().forEach((track) => {
@@ -115,101 +121,13 @@ function Header() {
 
     const mediaRecorder = await handleMediaRecorder(videoStream);
 
-    await switchSlides();
-
     setTimeout(async () => {
       handleRecordingStopped(mediaRecorder, audio);
-    }, totalDurationInMs); //totalDurationInMs
+    }, totalDurationInMs);
+
+    await switchSlides();
   };
 
-  // const handleMediaRecorder = (videoStream) => {
-  //   //
-  //   const mediaRecorder = new MediaRecorder(videoStream);
-  //   setTimeout(async () => {
-  //     await mediaRecorder.start();
-  //   }, 200);
-  //   let chunks = [];
-
-  //   mediaRecorder.ondataavailable = function (e) {
-  //     chunks.push(e.data);
-  //   };
-
-  //   mediaRecorder.onstop = async function (e) {
-  //     const blob = new Blob(chunks, { type: 'video/mp4' });
-  //     chunks = [];
-  //     const videoURL = URL.createObjectURL(blob);
-  //     let a = document.createElement('a');
-  //     document.body.appendChild(a);
-  //     a.style = 'display: none';
-  //     a.href = videoURL;
-  //     a.download = 'video.mp4';
-  //     a.click();
-  //   };
-
-  //   return mediaRecorder;
-  // };
-
-  // const switchSlides = async () => {
-  //   slides?.map(async (current, index) => {
-  //     if (index === 0) {
-  //       return;
-  //     }
-  //     setTimeout(async () => {
-  //       updatePlay(true);
-  //       updateCurrentSlideIndex(index);
-  //       updateCurrentSlide(current);
-  //       await sleep(parseInt(current.duration) * 1000);
-  //       updatePlay(false);
-  //     }, 100);
-  //   });
-  // };
-
-  // const handleRecordingStopped = async (mediaRecorder, audio) => {
-  //   mediaRecorder.stop();
-  //   await audio.pause();
-  //   updateIsRecording(false);
-  //   updatePlay(false);
-  // };
-
-  // const handlePlayCompleteVideo = async () => {
-  //   if (isPlay) return;
-  //   const totalDuration = slides.reduce(function (acc, obj) {
-  //     return acc + obj.duration;
-  //   }, 0);
-
-  //   const totalDurationInMs = (parseInt(totalDuration) + 3) * 1000;
-
-  //   let index = 0;
-  //   let slide = slides[0];
-  //   const audio = new Audio(URL.createObjectURL(audioSelected));
-  //   await audio.play();
-
-  //   updateIsRecording(true);
-
-  //   const audioStream = audio.captureStream();
-
-  //   const canvas = document.querySelector('.konva_current_canvas canvas');
-  //   // const ctx = canvas.getContext('2d');
-  //   const videoStream = canvas.captureStream(30);
-
-  //   audioStream.getAudioTracks().forEach((track) => {
-  //     videoStream.addTrack(track);
-  //   });
-
-  //   const mediaRecorder = await handleMediaRecorder(videoStream);
-
-  //   updateCurrentSlideIndex(index);
-  //   updateCurrentSlide(slide);
-  //   updatePlay(true);
-  //   await sleep(parseInt(slide.duration) * 1000);
-  //   updatePlay(false);
-
-  //   setTimeout(switchSlides, 50);
-
-  //   setTimeout(async () => {
-  //     handleRecordingStopped(mediaRecorder, audio);
-  //   }, totalDurationInMs);
-  // };
   const handleDurationChange = (value) => {
     let slide = { ...currentSlide };
     slide.duration = parseInt(value);
