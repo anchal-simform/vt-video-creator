@@ -254,7 +254,7 @@ function Timeline() {
                 backgroundColor: slide.backgroundColor
               }}
             >
-              <div className="slide__delete">{renderSlideDelete(i)}</div>
+              {/* <div className="slide__delete">{renderSlideDelete(i)}</div> */}
               <div
                 style={{
                   padding: '10px'
