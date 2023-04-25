@@ -24,6 +24,7 @@ function ColorPaletteToolbox() {
     );
     updateSlides(newSlides);
   };
+
   return (
     <>
       <div className="toolbox_title">Pick a background Color</div>

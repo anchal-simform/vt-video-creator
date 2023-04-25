@@ -9,8 +9,12 @@ const useSlidesStore = create((set) => ({
   totalDuration: 5,
   audio: null,
   isRecording: false,
-  addSlide: (newSlide) =>
-    set((state) => ({ slides: [...state.slides, newSlide] })),
+  addNewSlide: () =>
+    set((state) => ({
+      slides: [...state.slides, DEFAULT_SLIDE_OBJECT],
+      currentSlideIndex: state.slides.length,
+      currentSlide: DEFAULT_SLIDE_OBJECT
+    })),
   updateSlides: (slides) => set((state) => ({ slides: slides })),
   updateCurrentSlide: (currentSlide) => set((state) => ({ currentSlide })),
   updateCurrentSlideIndex: (index) =>
