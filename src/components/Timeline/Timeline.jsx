@@ -291,6 +291,7 @@ function Timeline() {
             </div>
           ))}
           <PlusCircleFilled
+            className="add_new_slide"
             style={{ fontSize: '46px', margin: '10px' }}
             onClick={handleAddNew}
           />

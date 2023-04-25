@@ -257,6 +257,7 @@ function Viewport() {
           <Text
             fontStyle="italic"
             key={'123'}
+            fontSize={1}
             text="."
             ref={textRef}
             draggable={true}
