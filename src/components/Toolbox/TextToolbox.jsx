@@ -31,7 +31,6 @@ function TextToolbox() {
     (state) => state.updateCurrentSlide
   );
   const updateSlides = useSlidesStore((state) => state.updateSlides);
-
   const handleFontSize = (value) => {
     setFontSize(value);
   };
@@ -73,7 +72,6 @@ function TextToolbox() {
     updateCurrentSlide(slide);
 
     // Update the slides array
-
     const index = currentSlideIndex;
     const newSlides = slides.map((obj, idx) =>
       idx === index ? { ...obj, texts: [...obj.texts, textNode] } : obj

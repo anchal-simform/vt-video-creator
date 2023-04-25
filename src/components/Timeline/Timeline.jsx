@@ -157,9 +157,11 @@ function Timeline() {
     setTimeout(async () => {
       handleRecordingStopped(mediaRecorder, audio);
     }, totalDurationInMs);
+
     await switchSlides();
   };
 
+  // This function handles the audio file select and update the audio in slides store
   const handleAudioFileSelect = (event) => {
     const file = event.target.files[0];
     if (!file?.type.startsWith('audio/')) {
@@ -169,6 +171,7 @@ function Timeline() {
     updateAudio(file);
   };
 
+  // This function is to delete the slide
   const deleteSlide = (e, index) => {
     e?.stopPropagation();
     const newSlides = [...slides];
@@ -176,6 +179,7 @@ function Timeline() {
     updateSlides(newSlides);
   };
 
+  // This function is render the slide delete icon/button
   const renderSlideDelete = (index) => {
     if (slides.length === 1) return;
 
