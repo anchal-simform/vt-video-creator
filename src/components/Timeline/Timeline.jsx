@@ -216,7 +216,7 @@ function Timeline() {
         <TextBold />
       </div>
       <div className="timeline__mid">
-        <div className="timeline__mid__grid">
+        {/* <div className="timeline__mid__grid">
           <div>0:00s</div>
           <div>0:20s</div>
           <div>0:40s</div>
@@ -241,14 +241,14 @@ function Timeline() {
           <div>7:00s</div>
           <div>7:20s</div>
           <div>7:40s</div>
-        </div>
+        </div> */}
         <div className="timeline__mid__images">
           {slides?.map((slide, i) => (
             <div
               key={i}
               onClick={() => handleSlideClick(slide, i)}
               className={`timeline_slide_preview_item ${
-                currentSlideIndex === i ? 'active' : ''
+                currentSlideIndex === i ? 'active' : 'not_active'
               } `}
               style={{
                 backgroundColor: slide.backgroundColor
