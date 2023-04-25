@@ -73,7 +73,7 @@ export const INTRO_STEPS = [
   },
   {
     element: '.play_save_slides',
-    intro: 'Click here Play and save to download video'
+    intro: 'Click here to Play and save to download video'
   }
 ];
 
