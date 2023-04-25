@@ -1,6 +1,6 @@
 import ActionCard from '../ActionCard/ActionCard';
 import HomeCard from '../HomeCard/HomeCard';
-import { actionData, recentData, latestData } from '../../Pages/homedata';
+import { actionData, recentData, latestData } from '../ActionCard/homedata';
 import './HomeMain.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import useSlidesStore from '../../store/useSlidesStore';

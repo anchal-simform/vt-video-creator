@@ -10,8 +10,8 @@ function Sidebar({ activeItem, setActiveItem }) {
         <li
           className={
             activeItem === 'media'
-              ? 'sidebar__list__item active'
-              : 'sidebar__list__item'
+              ? 'sidebar__list__item active media_nav'
+              : 'sidebar__list__item media_nav'
           }
           onClick={() => setActiveItem('media')}
         >
@@ -21,8 +21,8 @@ function Sidebar({ activeItem, setActiveItem }) {
         <li
           className={
             activeItem === 'text'
-              ? 'sidebar__list__item active'
-              : 'sidebar__list__item'
+              ? 'sidebar__list__item active text_nav'
+              : 'sidebar__list__item text_nav'
           }
           onClick={() => setActiveItem('text')}
         >
@@ -43,8 +43,8 @@ function Sidebar({ activeItem, setActiveItem }) {
         <li
           className={
             activeItem === 'colors'
-              ? 'sidebar__list__item active'
-              : 'sidebar__list__item'
+              ? 'sidebar__list__item active color_palette'
+              : 'sidebar__list__item color_palette'
           }
           onClick={() => setActiveItem('colors')}
         >

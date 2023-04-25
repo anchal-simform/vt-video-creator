@@ -8,15 +8,7 @@ function App() {
   return (
     <div className="App wrapper">
       <Routes>
-        <Route
-          path={'/editor'}
-          element={
-            <>
-              <Header />
-              <Editor />
-            </>
-          }
-        />
+        <Route path={'/editor'} element={<Editor />} />
         <Route
           path="/"
           element={
