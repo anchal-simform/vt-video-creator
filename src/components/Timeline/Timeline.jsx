@@ -10,8 +10,8 @@ import { PlayBold } from '../../assets/icons/PlayBold';
 import { TextBold } from '../../assets/icons/TextBold';
 import useSlidesStore from '../../store/useSlidesStore';
 import { sleep } from '../../utils/commonFunction';
-import { DEFAULT_SLIDE_OBJECT } from '../../utils/constants';
 import Waveform from '../Waveform/Waveform';
+import toast from 'react-hot-toast';
 import './Timeline.scss';
 
 // import { Slider } from 'antd';
@@ -61,6 +61,10 @@ function Timeline() {
 
   // This function is used to handle the play event when play icon is clicked
   const handlePlay = async () => {
+    if (!audioSelected) {
+      toast.error('Please select an audio file first');
+      return;
+    }
     setTimeout(() => {
       handlePlayCompleteVideo();
     }, 100);
@@ -159,7 +163,7 @@ function Timeline() {
   const handleAudioFileSelect = (event) => {
     const file = event.target.files[0];
     if (!file?.type.startsWith('audio/')) {
-      alert('Please select an audio file.');
+      toast.error('Please select an audio type file only.');
       return;
     }
     updateAudio(file);

@@ -9,6 +9,7 @@ import logo from '../../assets/img/logo.png';
 import useSlidesStore from '../../store/useSlidesStore';
 import { sleep } from '../../utils/commonFunction';
 import { DURATION_OPTIONS } from '../../utils/constants';
+import toast from 'react-hot-toast';
 import './Header.scss';
 
 function Header({ handleGetStarted }) {
@@ -111,7 +112,7 @@ function Header({ handleGetStarted }) {
     if (isPlay) return;
 
     if (!audioSelected) {
-      alert('Please select an audio file.');
+      toast.error('Please select an audio file first');
       return;
     }
 
@@ -148,6 +149,10 @@ function Header({ handleGetStarted }) {
   };
 
   const handleSave = async () => {
+    if (!audioSelected) {
+      toast.error('Please select an audio file first');
+      return;
+    }
     handlePlayCompleteVideo();
   };
 
