@@ -9,6 +9,7 @@ import logo from '../../assets/img/logo.png';
 import useSlidesStore from '../../store/useSlidesStore';
 import { sleep } from '../../utils/commonFunction';
 import { DURATION_OPTIONS } from '../../utils/constants';
+import toast from 'react-hot-toast';
 import './Header.scss';
 
 function Header({ handleGetStarted }) {
@@ -31,9 +32,10 @@ function Header({ handleGetStarted }) {
 
   const updateSlides = useSlidesStore((state) => state.updateSlides);
 
+  /** This function is to handle a single file previos */
   const handlePreview = async () => {
     updatePlay(true);
-    await sleep(currentSlide * 1000);
+    await sleep(parseInt(currentSlide.duration) * 1000);
     updatePlay(false);
   };
 
@@ -48,6 +50,7 @@ function Header({ handleGetStarted }) {
       chunks.push(e.data);
     };
 
+    // When the media recorder stops this would download the video to the device
     mediaRecorder.onstop = async function (e) {
       console.log('Inside the handle on stop');
       const blob = new Blob(chunks, { type: 'video/mp4' });
@@ -64,6 +67,7 @@ function Header({ handleGetStarted }) {
     return mediaRecorder;
   };
 
+  // This function is for switching the multiple slides after set duration fo that particular slide
   const switchSlides = async () => {
     for (let i = 0; i < slides.length; i++) {
       let index = i;
@@ -76,6 +80,7 @@ function Header({ handleGetStarted }) {
     }
   };
 
+  // This function is to handle the stopping of recording Just needs to stop media recorder and also pause the audio
   const handleRecordingStopped = async (mediaRecorder, audio) => {
     console.log('Inside the handle recording saved');
     await mediaRecorder.stop();
@@ -85,6 +90,7 @@ function Header({ handleGetStarted }) {
     updateIsRecording(false);
   };
 
+  // This function is to start the audio stream of the selected audio
   const startAudioStream = async () => {
     const audio = new Audio(URL.createObjectURL(audioSelected));
     // audioPlaying.current = audio;
@@ -93,6 +99,7 @@ function Header({ handleGetStarted }) {
     return { audioStream, audio };
   };
 
+  // This function is to start the video stream
   const startVideoStream = async () => {
     const canvas = document.querySelector('.konva_current_canvas canvas');
     // const ctx = canvas.getContext('2d');
@@ -100,11 +107,12 @@ function Header({ handleGetStarted }) {
     return videoStream;
   };
 
+  // This function is to handle the event when need to play the complete video
   const handlePlayCompleteVideo = async () => {
     if (isPlay) return;
 
     if (!audioSelected) {
-      alert('Please select an audio file.');
+      toast.error('Please select an audio file first');
       return;
     }
 
@@ -141,6 +149,10 @@ function Header({ handleGetStarted }) {
   };
 
   const handleSave = async () => {
+    if (!audioSelected) {
+      toast.error('Please select an audio file first');
+      return;
+    }
     handlePlayCompleteVideo();
   };
 
@@ -164,7 +176,7 @@ function Header({ handleGetStarted }) {
         <div className="header__action__buttons">
           <div className="buttons__history">
             <Button type="ghost" onClick={() => handleGetStarted()}>
-              Get Started
+              Getting Started
             </Button>
             {/* <Undo />
             <Redo /> */}

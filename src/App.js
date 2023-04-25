@@ -1,23 +1,17 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
-import Header from './components/Header/Header';
+import { Route, Routes } from 'react-router-dom';
+import './App.scss';
 import Editor from './Pages/Editor';
 import Home from './Pages/Home';
-import './App.scss';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <div className="App wrapper">
       <Routes>
         <Route path={'/editor'} element={<Editor />} />
-        <Route
-          path="/"
-          element={
-            <>
-              <Home />
-            </>
-          }
-        />
+        <Route path="/" element={<Home />} />
       </Routes>
+      <Toaster />
     </div>
   );
 }

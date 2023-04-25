@@ -4,26 +4,27 @@ import {
   PauseCircleOutlined,
   PlusCircleFilled
 } from '@ant-design/icons';
-import { Slider } from 'antd';
-import React, { useRef, useTransition } from 'react';
+import React, { useRef } from 'react';
 import { MusicBold } from '../../assets/icons/MusicBold';
 import { PlayBold } from '../../assets/icons/PlayBold';
 import { TextBold } from '../../assets/icons/TextBold';
-import { ZoomIn } from '../../assets/icons/ZoomIn';
-import { ZoomOut } from '../../assets/icons/ZoomOut';
 import useSlidesStore from '../../store/useSlidesStore';
 import { sleep } from '../../utils/commonFunction';
-import { DEFAULT_SLIDE_OBJECT } from '../../utils/constants';
 import Waveform from '../Waveform/Waveform';
+import toast from 'react-hot-toast';
 import './Timeline.scss';
 
+// import { Slider } from 'antd';
+// import { ZoomIn } from '../../assets/icons/ZoomIn';
+// import { ZoomOut } from '../../assets/icons/ZoomOut';
+
 function Timeline() {
-  const [isPending, setTransition] = useTransition();
   const currentSlide = useSlidesStore((state) => state.currentSlide);
   const currentSlideIndex = useSlidesStore((state) => state.currentSlideIndex);
   const updateCurrentSlideIndex = useSlidesStore(
     (state) => state.updateCurrentSlideIndex
   );
+  const addNewSlide = useSlidesStore((state) => state.addNewSlide);
   const slides = useSlidesStore((state) => state.slides);
   const updateSlides = useSlidesStore((state) => state.updateSlides);
   const updateCurrentSlide = useSlidesStore(
@@ -48,12 +49,9 @@ function Timeline() {
     updateSlides(newSlides);
   };
 
+  // This function is use to add the new slide and set that as the new current slide as well
   const handleAddNew = () => {
-    const newSlide = DEFAULT_SLIDE_OBJECT;
-    const allSlides = [...slides];
-    updateCurrentSlide(newSlide);
-    updateCurrentSlideIndex(allSlides.length);
-    updateSlides([...allSlides, newSlide]);
+    addNewSlide();
   };
 
   const handleSlideClick = (slide, index) => {
@@ -61,12 +59,18 @@ function Timeline() {
     updateCurrentSlideIndex(index);
   };
 
+  // This function is used to handle the play event when play icon is clicked
   const handlePlay = async () => {
+    if (!audioSelected) {
+      toast.error('Please select an audio file first');
+      return;
+    }
     setTimeout(() => {
       handlePlayCompleteVideo();
     }, 100);
   };
 
+  // This function handles the media recorder and its events
   const handleMediaRecorder = (videoStream) => {
     const mediaRecorder = new MediaRecorder(videoStream);
     setTimeout(async () => {
@@ -92,6 +96,7 @@ function Timeline() {
     return mediaRecorder;
   };
 
+  // This function is for switching the multiple slides after set duration fo that particular slide
   const switchSlides = async () => {
     for (let i = 0; i < slides.length; i++) {
       let index = i;
@@ -104,6 +109,7 @@ function Timeline() {
     }
   };
 
+  // This function is to handle the stopping of recording Just needs to stop media recorder and also pause the audio
   const handleRecordingStopped = async (mediaRecorder, audio) => {
     await mediaRecorder.stop();
     audio?.pause();
@@ -112,6 +118,7 @@ function Timeline() {
     updateIsRecording(false);
   };
 
+  // This function is to start the audio stream of the selected audio
   const startAudioStream = async () => {
     const audio = new Audio(URL.createObjectURL(audioSelected));
     audioPlaying.current = audio;
@@ -120,6 +127,7 @@ function Timeline() {
     return { audioStream, audio };
   };
 
+  // This function is to start the video stream
   const startVideoStream = async () => {
     const canvas = document.querySelector('.konva_current_canvas canvas');
     // const ctx = canvas.getContext('2d');
@@ -127,6 +135,7 @@ function Timeline() {
     return videoStream;
   };
 
+  // This function is to handle the event when need to play the complete video
   const handlePlayCompleteVideo = async () => {
     if (play || audioPlaying.current) return;
     const totalDuration = slides.reduce(function (acc, obj) {
@@ -154,7 +163,7 @@ function Timeline() {
   const handleAudioFileSelect = (event) => {
     const file = event.target.files[0];
     if (!file?.type.startsWith('audio/')) {
-      alert('Please select an audio file.');
+      toast.error('Please select an audio type file only.');
       return;
     }
     updateAudio(file);
@@ -281,10 +290,6 @@ function Timeline() {
                 {slide?.texts?.map((text, index) => (
                   <span key={index} className="timeline_text_container">
                     <span className="timeline_text">{text?.text}</span>
-                    {/* <DeleteOutlined
-                      style={{ marginLeft: '5px' }}
-                      onClick={(e) => deleteTextItem(index)}
-                    /> */}
                   </span>
                 )) ?? ''}
               </div>

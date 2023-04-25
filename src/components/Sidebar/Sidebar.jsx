@@ -29,6 +29,9 @@ function Sidebar({ activeItem, setActiveItem }) {
           <Text />
           <span>Text</span>
         </li>
+
+        {/* @TODO : Commenting the Graphics navbar since its not used currently  */}
+
         {/* <li
           className={
             activeItem === 'graphics'

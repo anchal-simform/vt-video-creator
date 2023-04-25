@@ -24,7 +24,6 @@ function SidebarHome() {
 
   return (
     <div className="sidebarhome">
-      {/* <Link to="/editor"> */}
       <Button
         type="primary"
         className="sidebarhome__button"
@@ -33,7 +32,6 @@ function SidebarHome() {
       >
         New Video
       </Button>
-      {/* </Link> */}
       <ul className="sidebarhome__list">
         <li className="sidebarhome__list__item active">
           <Link>
