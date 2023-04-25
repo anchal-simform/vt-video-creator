@@ -72,6 +72,10 @@ export const INTRO_STEPS = [
     intro: 'Click here to Add new slide'
   },
   {
+    element: '.preview_current_slide',
+    intro: 'Click here to Preview single slide animation without music'
+  },
+  {
     element: '.play_save_slides',
     intro: 'Click here to Play and save to download video'
   }
