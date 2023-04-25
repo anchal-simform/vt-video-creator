@@ -8,6 +8,7 @@
   border-radius: 20px;
   border: 1px solid var($clr-neutral-bg);
   background-color: $clr-white;
+
   &_title {
     font-size: 18px;
     line-height: 32px;
@@ -16,9 +17,9 @@
     margin-bottom: 20px;
   }
   
-.w-200 {
+  .w-200 {
   width: 200px;
-}
+  }
 
   .textbox {
     width: 100%;
@@ -111,10 +112,12 @@
       font-weight: 700;
     }
   }
+
   .audio_toolbox_container {
     margin: 10px;
     padding: 10px;
   }
+
   .image_list {
     display: grid;
     gap: 10px;

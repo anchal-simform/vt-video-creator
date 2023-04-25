@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
-import useSlidesStore from '../../store/useSlidesStore';
+import React from 'react';
 import { DeleteOutlined } from '@ant-design/icons';
+import useSlidesStore from '../../store/useSlidesStore';
 
 const ASPECT_RATIO = 16 / 9;
 const DEFAULT_HEIGHT = 250;
@@ -15,6 +15,7 @@ function MediaToolbox() {
   );
   const updateSlides = useSlidesStore((state) => state.updateSlides);
 
+  // This function is to handle image file selection
   const handleImageFileSelect = (event) => {
     const file = event.target.files[0];
     if (!file?.type?.startsWith('image/')) {
@@ -51,6 +52,7 @@ function MediaToolbox() {
     updateSlides();
   };
 
+  // This function is used to delete the image media on click of delete
   const deleteImageItem = (index) => {
     const newImageList = [...currentSlide.images];
     newImageList.splice(index, 1);

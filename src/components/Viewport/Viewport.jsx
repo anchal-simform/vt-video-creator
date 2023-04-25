@@ -10,10 +10,8 @@ function Viewport() {
     width: 0,
     height: 0
   });
-
   const play = useSlidesStore((state) => state.play);
   const updatePlay = useSlidesStore((state) => state.updatePlay);
-
   const isRecording = useSlidesStore((state) => state.isRecording);
   const updateIsRecording = useSlidesStore((state) => state.updateIsRecording);
   const totalDuration = useSlidesStore((state) => state.totalDuration);
@@ -41,6 +39,7 @@ function Viewport() {
     }
   }, []);
 
+  // This function is called after text dragging is ended
   const handleTextDragEnd = (event, index) => {
     const textNode = event.target;
     const newTextList = [...currentSlide.texts];
@@ -61,6 +60,8 @@ function Viewport() {
     updateSlides(newSlides);
   };
 
+  // This function is called after image dragging is ended
+
   const handleImageDragEnd = (event, img, index) => {
     const imageNode = event.target;
     const newImageList = [...currentSlide.images];
@@ -73,6 +74,7 @@ function Viewport() {
     newImageList[index] = image;
     const newPreviewImageList = [...currentSlide.previewImages];
     newPreviewImageList[index] = image;
+
     const newSlide = {
       ...currentSlide,
       images: newImageList,
@@ -84,20 +86,13 @@ function Viewport() {
     updateSlides(newSlides);
   };
 
+  // This function is used to remove the text and set size to minimum so the animation can work on those text
   const removeAnimationBeforePlaying = () => {
     const allTexts = currentSlide?.texts?.map((text) => {
       return { ...text, fontSize: 1 };
     });
     const newSlide = { ...currentSlide, texts: allTexts };
     updateCurrentSlide(newSlide);
-    // const allSlides = slides.map((slide, i) => {
-    //   const allTexts = currentSlide?.texts?.map((text) => {
-    //     return { ...text, fontSize: 1 };
-    //   });
-    //   const newSlide = { ...currentSlide, texts: allTexts };
-    //   return newSlide;
-    // });
-    // updateSlides(allSlides);
   };
 
   const playAnimation = () => {
@@ -109,8 +104,8 @@ function Viewport() {
 
   const startAnimation = () => {
     const t = currentSlide?.texts?.map((text, i) => {
-      // Render Animation in two steps first remove the animation by adding font 0
-      // and then add the new font
+      // Render Animation in two steps first remove the animation by
+      // adding font 0 and then add the new font
       const tween = new Konva.Tween({
         node: myRefs?.current[i],
         duration: text.duration,
@@ -128,7 +123,6 @@ function Viewport() {
       easing: Konva.Easings['EaseIn'],
       fontSize: 2,
       onFinish: async () => {
-        console.log('Inside the on Finish function');
         updatePlay(false);
       }
     });
@@ -148,28 +142,12 @@ function Viewport() {
 
   const recordVideo = async () => {
     try {
-      // const totalDurationInMs = (parseInt(currentSlide.duration) + 1.5) * 1000;
       if (!audioSelected) {
         updatePlay(false);
         updateIsRecording(false);
         alert('No Audio Selecte, Audio is mandatory');
         return;
       }
-
-      // updatePlay(false);
-      // updateIsRecording(false);
-      // const tween = new Konva.Tween({
-      //   node: textRef.current,
-      //   duration: parseInt(10),
-      //   easing: Konva.Easings['EaseIn'],
-      //   fontSize: 2,
-      //   onFinish: async () => {
-      //     console.log('Inside the on Finish function');
-      //     updatePlay(false);
-      //   }
-      // });
-
-      // await tween.play();
     } catch (error) {
       alert('Failed to record video');
       updatePlay(false);

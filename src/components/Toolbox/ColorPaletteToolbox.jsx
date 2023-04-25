@@ -11,6 +11,7 @@ function ColorPaletteToolbox() {
   );
   const updateSlides = useSlidesStore((state) => state.updateSlides);
 
+  // The function is used to handle the color chane and update the slide background color
   const handleColorChange = (e) => {
     const color = e.target.value;
     //  Update current Slide

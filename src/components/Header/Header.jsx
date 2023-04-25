@@ -39,11 +39,13 @@ function Header({ handleGetStarted }) {
     updatePlay(false);
   };
 
+  // This function is to handle media recorder events
   const handleMediaRecorder = (videoStream) => {
     const mediaRecorder = new MediaRecorder(videoStream);
     setTimeout(async () => {
       await mediaRecorder.start();
     }, 200);
+
     let chunks = [];
 
     mediaRecorder.ondataavailable = function (e) {
@@ -137,6 +139,7 @@ function Header({ handleGetStarted }) {
     await switchSlides();
   };
 
+  // This function is used to handle duration change and update current slide and slides
   const handleDurationChange = (value) => {
     let slide = { ...currentSlide };
     slide.duration = parseInt(value);
@@ -148,6 +151,7 @@ function Header({ handleGetStarted }) {
     updateSlides(newSlides);
   };
 
+  // This function is used to handle the play and save
   const handleSave = async () => {
     if (!audioSelected) {
       toast.error('Please select an audio file first');
@@ -178,8 +182,10 @@ function Header({ handleGetStarted }) {
             <Button type="ghost" onClick={() => handleGetStarted()}>
               Getting Started
             </Button>
-            {/* <Undo />
-            <Redo /> */}
+            {/* 
+            <Undo />
+            <Redo /> 
+            */}
           </div>
           <div className="buttons__divider" />
           <div className="buttons__time slide_duration">
