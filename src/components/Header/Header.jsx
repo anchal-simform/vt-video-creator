@@ -11,7 +11,7 @@ import { sleep } from '../../utils/commonFunction';
 import { DURATION_OPTIONS } from '../../utils/constants';
 import './Header.scss';
 
-function Header() {
+function Header({ handleGetStarted }) {
   const isPlay = useSlidesStore((state) => state.play);
   const updatePlay = useSlidesStore((state) => state.updatePlay);
   const currentSlide = useSlidesStore((state) => state.currentSlide);
@@ -163,11 +163,14 @@ function Header() {
         </Link>
         <div className="header__action__buttons">
           <div className="buttons__history">
+            <Button type="ghost" onClick={() => handleGetStarted()}>
+              Get Started
+            </Button>
             {/* <Undo />
             <Redo /> */}
           </div>
           <div className="buttons__divider" />
-          <div className="buttons__time">
+          <div className="buttons__time slide_duration">
             <Clock />
             <div className="dropdown-wrapper">
               <Select
@@ -186,6 +189,7 @@ function Header() {
             Secs
           </div>
           <Button
+            className="preview_current_slide"
             disabled={isPlay || isRecording}
             onClick={handlePreview}
             icon={<Play />}
@@ -193,6 +197,7 @@ function Header() {
             Preview
           </Button>
           <Button
+            className="play_save_slides"
             disabled={isPlay || isRecording}
             onClick={handleSave}
             type="primary"

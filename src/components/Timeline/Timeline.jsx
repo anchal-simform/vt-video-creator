@@ -199,11 +199,11 @@ function Timeline() {
             />
           </>
         ) : (
-          <span onClick={handlePlay} className="hand">
+          <span onClick={handlePlay} className="hand play_slides">
             <PlayBold />
           </span>
         )}
-        <label class="custom-file-upload">
+        <label class="custom-file-upload audio_select">
           <input
             onChange={handleAudioFileSelect}
             accept="audio/*"
