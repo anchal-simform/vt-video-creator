@@ -176,7 +176,7 @@ function Header({ handleGetStarted }) {
         <div className="header__action__buttons">
           <div className="buttons__history">
             <Button type="ghost" onClick={() => handleGetStarted()}>
-              Get Started
+              Getting Started
             </Button>
             {/* <Undo />
             <Redo /> */}
